@@ -19,7 +19,7 @@ Route::prefix('profile')->middleware(['auth'])->group(function () {
     Route::post('/get-kel', [ProfilController::class, 'get_kel'])->name('profil.get_kel');
 });
 
-// Route::get('/.well-known/pki-validation/8BEF4B4FBCD1B4C16BE6075B983FD451.txt', function () {
-//     $filePath = public_path('other/ssl/8BEF4B4FBCD1B4C16BE6075B983FD451.txt');
-//     return response()->file($filePath);
-// });
+Route::get('/.well-known/pki-validation/D9FCE00BA3865980AD8A6FF950904B04.txt', function () {
+    $filePath = public_path('other/ssl/D9FCE00BA3865980AD8A6FF950904B04.txt');
+    return response()->file($filePath);
+});

@@ -13,15 +13,11 @@
                 <div class="card-content">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped" style="width: 100%" id="table-data">
+                            <table class="table table-bordered table-striped table-custom" style="width: 100%" id="table-data">
                                 <thead>
                                     <tr>
-                                        <th>NO</th>
+                                        <th style="width: 30px;">NO</th>
                                         <th>NAMA</th>
-                                        <th>ROLE</th>
-                                        <th>USERNAME</th>
-                                        <th>EMAIL</th>
-                                        <th>NOMER HP</th>
                                         <th style="width: 50px;">AKSI</th>
                                     </tr>
                                 </thead>
@@ -58,7 +54,7 @@
                     [10, 25, 50, 100, "All"]
                 ],
                 ajax: {
-                    url: '{{ route('super_admin.registrasi.getTable') }}',
+                    url: '{{ route('admin.role.getTable') }}',
                     type: 'GET',
                     dataType: 'JSON',
                 },
@@ -67,24 +63,8 @@
                         name: 'DT_RowIndex',
                     },
                     {
-                        data: 'name',
-                        name: 'name'
-                    },
-                    {
-                        data: 'role',
-                        name: 'role'
-                    },
-                    {
-                        data: 'username',
-                        name: 'username'
-                    },
-                    {
-                        data: 'email',
-                        name: 'email'
-                    },
-                    {
-                        data: 'no_hp',
-                        name: 'no_hp'
+                        data: 'nama',
+                        name: 'nama'
                     },
                     {
                         data: 'action',
@@ -107,7 +87,7 @@
         function tambahData() {
             $.ajax({
                 type: "GET",
-                url: "{{ route('super_admin.registrasi.create') }}",
+                url: "{{ route('admin.role.create') }}",
                 dataType: "JSON",
                 data: {},
                 beforeSend: function(res) {
@@ -119,7 +99,7 @@
                 success: function(res) {
                     Swal.close();
                     show_modal_custom({
-                        judul: 'Tambah Data Registrasi',
+                        judul: 'Tambah Data Role',
                         html: res.html,
                         size: 'modal-lg',
                     });
@@ -130,7 +110,7 @@
         function editData(id) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('super_admin.registrasi.edit', '') }}/" + id,
+                url: "{{ route('admin.role.edit', '') }}/" + id,
                 dataType: "JSON",
                 data: {},
                 beforeSend: function(res) {
@@ -142,7 +122,7 @@
                 success: function(res) {
                     Swal.close();
                     show_modal_custom({
-                        judul: 'Edit Data Registrasi',
+                        judul: 'Edit Data Role',
                         html: res.html,
                         size: 'modal-lg',
                     });
@@ -153,7 +133,7 @@
         function detailData(id) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('super_admin.registrasi.detail', '') }}/" + id,
+                url: "{{ route('admin.role.detail', '') }}/" + id,
                 dataType: "JSON",
                 data: {},
                 beforeSend: function(res) {
@@ -165,30 +145,7 @@
                 success: function(res) {
                     Swal.close();
                     show_modal_custom({
-                        judul: 'Detail Data Registrasi',
-                        html: res.html,
-                        size: 'modal-lg',
-                    });
-                }
-            });
-        }
-
-        function resetPassword(id) {
-            $.ajax({
-                type: "GET",
-                url: "{{ route('super_admin.registrasi.resetPassword', '') }}/" + id,
-                dataType: "JSON",
-                data: {},
-                beforeSend: function(res) {
-                    beforeLoading(res);
-                },
-                error: function(res) {
-                    errorLoading(res);
-                },
-                success: function(res) {
-                    Swal.close();
-                    show_modal_custom({
-                        judul: 'Reset Password',
+                        judul: 'Detail Data Role',
                         html: res.html,
                         size: 'modal-lg',
                     });
@@ -198,7 +155,7 @@
 
         function hapusData(id) {
             Swal.fire({
-                title: 'Hapus Data Registrasi ?',
+                title: 'Hapus Data Role ?',
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Ya',
@@ -208,7 +165,7 @@
                 if (result.value) {
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ route('super_admin.registrasi.delete', '') }}/" + id,
+                        url: "{{ route('admin.role.delete', '') }}/" + id,
                         dataType: "JSON",
                         beforeSend: function(res) {
                             beforeLoading(res);
@@ -230,90 +187,6 @@
                     });
                 }
             })
-        }
-
-        function pilih_kab(dt) {
-            $.ajax({
-                type: "POST",
-                url: "{{ route('profil.get_kab') }}",
-                data: {
-                    kode_wilayah: $(dt).val(),
-                },
-                dataType: "JSON",
-                beforeSend: function(res) {
-                    beforeLoading(res);
-                },
-                error: function(res) {
-                    errorLoading(res);
-                },
-                success: function(res) {
-                    Swal.close();
-                    var html = '<option value=""></option>';
-                    $.map(res.data, function(e, i) {
-                        html += `
-                            <option value="${e.kode_wilayah}">${e.nama}</option>
-                       `;
-                    });
-                    $('#select_kab').html(html);
-                    $('#select_kec').html('<option value=""></option>');
-                    $('#select_kel').html('<option value=""></option>');
-                }
-            });
-        }
-
-        function pilih_kec(dt) {
-            $.ajax({
-                type: "POST",
-                url: "{{ route('profil.get_kec') }}",
-                data: {
-                    kode_wilayah: $(dt).val(),
-                },
-                dataType: "JSON",
-                beforeSend: function(res) {
-                    beforeLoading(res);
-                },
-                error: function(res) {
-                    errorLoading(res);
-                },
-                success: function(res) {
-                    Swal.close();
-                    var html = '<option value=""></option>';
-                    $.map(res.data, function(e, i) {
-                        html += `
-                            <option value="${e.kode_wilayah}">${e.nama}</option>
-                       `;
-                    });
-                    $('#select_kec').html(html);
-                    $('#select_kel').html('<option value=""></option>');
-                }
-            });
-        }
-
-        function pilih_kel(dt) {
-            $.ajax({
-                type: "POST",
-                url: "{{ route('profil.get_kel') }}",
-                data: {
-                    kode_wilayah: $(dt).val(),
-                },
-                dataType: "JSON",
-                beforeSend: function(res) {
-                    beforeLoading(res);
-                },
-                error: function(res) {
-                    errorLoading(res);
-                },
-                success: function(res) {
-                    Swal.close();
-                    var html = '<option value=""></option>';
-                    $.map(res.data, function(e, i) {
-                        html += `
-                            <option value="${e.kode_wilayah}">${e.nama}</option>
-                       `;
-                    });
-                    $('#select_kel').html(html);
-                }
-            });
         }
     </script>
 @endsection

@@ -6,37 +6,27 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('pohon', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('user_id')->nullable();
-            $table->string('nama');
+            $table->string('nama_indo');
+            $table->string('kode')->nullable();
+            $table->string('kode_desa')->nullable();
             $table->point('koordinat')->nullable();;
             $table->string('lokasi')->nullable();
-            $table->string('jenis_pohon')->nullable();
-            $table->string('kondisi')->nullable();
+            $table->string('nama_latin')->nullable();
+            $table->string('jenis_id')->nullable();
             $table->decimal('tinggi')->nullable();
             $table->decimal('diameter')->nullable();
-            $table->string('foto')->nullable();
+            $table->decimal('akar')->nullable();
+            $table->text('kondisi')->nullable();
+            $table->text('detail')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('user_id')->references('id')->on('users')
-                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('pohon');

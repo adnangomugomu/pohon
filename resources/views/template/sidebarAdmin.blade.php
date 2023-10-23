@@ -34,13 +34,6 @@
             </div>
         </a>
 
-        <a href="{{ route('admin.ref_kondisi') }}" class="br-menu-link {{ Request::routeIs('admin.ref_kondisi') ? 'active' : ''}}">
-            <div class="br-menu-item">
-                <i class="menu-item-icon icon ion-clipboard tx-22"></i>
-                <span class="menu-item-label">Kondisi Pohon</span>
-            </div>
-        </a>
-
     </div>
 
     <br>

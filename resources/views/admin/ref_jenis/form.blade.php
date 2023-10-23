@@ -1,24 +1,18 @@
-<form action="#" onsubmit="event.preventDefault();doSubmit(this);">
+<form action="#" onsubmit="event.preventDefault();doSubmit(this);">   
     <div class="form-group">
-        <label>Nama Role <small class="text-danger">*</small></label>
-        <input type="text" value="{{ $row->nama }}" name="nama" class="form-control" placeholder="masukkan isian" required>
+        <label>Nama Jenis <small class="text-danger">*</small></label>
+        <input type="text" name="nama" class="form-control" placeholder="masukkan isian" required>
     </div>
     <div class="text-right">
-        <button type="submit" class="btn btn-primary">UPDATE</button>
+        <button type="submit" class="btn btn-primary">SIMPAN</button>
     </div>
 </form>
 
 <script>
-    $(document).ready(function() {
-        $('.form_select').select2({
-            width: '100%',
-        })
-    });
-
     function doSubmit(dt) {
 
         Swal.fire({
-            title: 'Update Data ?',
+            title: 'Simpan Data ?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Ya',
@@ -29,10 +23,7 @@
 
                 $.ajax({
                     type: "POST",
-                    headers: {
-                        'X-HTTP-Method-Override': 'PUT'
-                    },
-                    url: "{{ route('super_admin.role.update', $row->id) }}",
+                    url: "{{ route('admin.ref_jenis.store') }}",
                     data: new FormData(dt),
                     dataType: "JSON",
                     contentType: false,

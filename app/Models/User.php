@@ -44,11 +44,6 @@ class User extends Authenticatable
         });
     }
 
-    public function pohon()
-    {
-        return $this->hasMany(Pohon::class, 'user_id', 'id');
-    }
-
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id', 'id');

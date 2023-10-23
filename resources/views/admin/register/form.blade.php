@@ -97,7 +97,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('super_admin.registrasi.store') }}",
+                    url: "{{ route('admin.registrasi.store') }}",
                     data: new FormData(dt),
                     dataType: "JSON",
                     contentType: false,

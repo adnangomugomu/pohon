@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kecamatan;
-use App\Models\Pohon;
 use App\Models\Ref_jenis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,30 +10,27 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
-class PohonController extends Controller
+class RefJenisController extends Controller
 {
     public function index()
     {
         $data = [
-            'title' => 'Data Pohon',
-            'header' => 'Data Pohon',
-            'breadcrumb' => ['Data Pohon', 'index']
+            'title' => 'Referensi Jenis Pohon',
+            'header' => 'Referensi Jenis Pohon',
+            'breadcrumb' => ['Referensi', 'Jenis Pohon', 'index']
         ];
-        return view('admin.pohon.index', $data);
+        return view('admin.ref_jenis.index', $data);
     }
 
     public function create()
     {
-        $data = [
-            'title' => 'Form Data Pohon',
-            'header' => 'Form Data Pohon',
-            'breadcrumb' => ['Data Pohon', 'form']
-        ];
+        $data = [];
+        $html = view('admin.ref_jenis.form', $data)->render();
 
-        $data['kecamatan'] = Kecamatan::where('kode_kab', 3309)->get();
-        $data['jenis'] = Ref_jenis::all();
-
-        return view('admin.pohon.form', $data);
+        return response()->json([
+            'status' => 'success',
+            'html' => $html,
+        ], 200);
     }
 
     public function store(Request $request)
@@ -52,7 +47,7 @@ class PohonController extends Controller
                     'msg' => $validator->getMessageBag()->all(),
                 ], 400);
             } else {
-                $data = new Pohon();
+                $data = new Ref_jenis();
                 $data->nama = $request->nama;
                 $data->save();
                 DB::commit();
@@ -74,10 +69,10 @@ class PohonController extends Controller
 
     public function show($id)
     {
-        $row = Pohon::findOrFail($id);
+        $row = Ref_jenis::findOrFail($id);
         if ($row) {
             $data['row'] = $row;
-            $html = view('admin.pohon.detail', $data)->render();
+            $html = view('admin.ref_jenis.detail', $data)->render();
 
             return response()->json([
                 'status' => 'success',
@@ -92,10 +87,10 @@ class PohonController extends Controller
 
     public function edit($id)
     {
-        $row = Pohon::findOrFail($id);
+        $row = Ref_jenis::findOrFail($id);
         if ($row) {
             $data['row'] = $row;
-            $html = view('admin.pohon.formEdit', $data)->render();
+            $html = view('admin.ref_jenis.formEdit', $data)->render();
 
             return response()->json([
                 'status' => 'success',
@@ -122,7 +117,7 @@ class PohonController extends Controller
                     'msg' => $validator->getMessageBag()->all(),
                 ], 400);
             } else {
-                $data = Pohon::findOrFail($id);
+                $data = Ref_jenis::findOrFail($id);
                 $data->nama = $request->nama;
                 $data->save();
                 DB::commit();
@@ -144,7 +139,7 @@ class PohonController extends Controller
 
     public function destroy($id)
     {
-        $data = Pohon::findOrFail($id);
+        $data = Ref_jenis::findOrFail($id);
         if ($data) {
             $data->delete();
             return response()->json([
@@ -161,20 +156,9 @@ class PohonController extends Controller
 
     public function getDataTable(Request $request)
     {
-        $data = Pohon::with('user')->get();
+        $data = Ref_jenis::all();
         return DataTables::of($data)
             ->addIndexColumn()
-            ->editColumn('nama', function ($dt) {
-                return $dt->nama .
-                    '<div class="text-primary"><i class="fa fa-user"></i> ' . $dt->user->name . '</div>';
-            })
-            ->editColumn('lokasi', function ($dt) {
-                return $dt->lokasi .
-                    '<div>
-                    <button class="btn btn-link btn-sm"><i class="fa fa-map"></i> Maps</button>
-                    <button class="btn btn-link btn-sm"><i class="fa fa-camera"></i> Foto</button>
-                </div>';
-            })
             ->addColumn('action', function ($dt) {
                 return '                    
                     <div class="dropdown">
@@ -188,5 +172,5 @@ class PohonController extends Controller
             })
             ->escapeColumns('active')
             ->make(true);
-    } //
+    }
 }

@@ -54,7 +54,7 @@
                     [10, 25, 50, 100, "All"]
                 ],
                 ajax: {
-                    url: '{{ route('super_admin.role.getTable') }}',
+                    url: '{{ route('admin.ref_jenis.getTable') }}',
                     type: 'GET',
                     dataType: 'JSON',
                 },
@@ -87,7 +87,7 @@
         function tambahData() {
             $.ajax({
                 type: "GET",
-                url: "{{ route('super_admin.role.create') }}",
+                url: "{{ route('admin.ref_jenis.create') }}",
                 dataType: "JSON",
                 data: {},
                 beforeSend: function(res) {
@@ -99,7 +99,7 @@
                 success: function(res) {
                     Swal.close();
                     show_modal_custom({
-                        judul: 'Tambah Data Role',
+                        judul: 'Tambah Data Jenis Pohon',
                         html: res.html,
                         size: 'modal-lg',
                     });
@@ -110,7 +110,7 @@
         function editData(id) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('super_admin.role.edit', '') }}/" + id,
+                url: "{{ route('admin.ref_jenis.edit', '') }}/" + id,
                 dataType: "JSON",
                 data: {},
                 beforeSend: function(res) {
@@ -122,7 +122,7 @@
                 success: function(res) {
                     Swal.close();
                     show_modal_custom({
-                        judul: 'Edit Data Role',
+                        judul: 'Edit Data Jenis Pohon',
                         html: res.html,
                         size: 'modal-lg',
                     });
@@ -133,7 +133,7 @@
         function detailData(id) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('super_admin.role.detail', '') }}/" + id,
+                url: "{{ route('admin.ref_jenis.detail', '') }}/" + id,
                 dataType: "JSON",
                 data: {},
                 beforeSend: function(res) {
@@ -145,7 +145,7 @@
                 success: function(res) {
                     Swal.close();
                     show_modal_custom({
-                        judul: 'Detail Data Role',
+                        judul: 'Detail Data Jenis Pohon',
                         html: res.html,
                         size: 'modal-lg',
                     });
@@ -155,7 +155,7 @@
 
         function hapusData(id) {
             Swal.fire({
-                title: 'Hapus Data Role ?',
+                title: 'Hapus Data Jenis Pohon ?',
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Ya',
@@ -165,7 +165,7 @@
                 if (result.value) {
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ route('super_admin.role.delete', '') }}/" + id,
+                        url: "{{ route('admin.ref_jenis.delete', '') }}/" + id,
                         dataType: "JSON",
                         beforeSend: function(res) {
                             beforeLoading(res);

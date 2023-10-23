@@ -8,7 +8,8 @@
 
     <link rel="apple-touch-icon" href="{{ asset('img/icon.png') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/icon.png') }}">
-
+    <meta name="robots" content="noindex"/>
+    
     <!-- Twitter -->
     <meta name="twitter:site" content="@themepixels">
     <meta name="twitter:creator" content="@themepixels">
@@ -59,10 +60,8 @@
         </a>
     </div>
     @if (Auth::user()->role_id == 1)
-        @include('template.sidebarSuperAdmin')
-    @elseif (Auth::user()->role_id == 2)
         @include('template.sidebarAdmin')
-    @elseif (Auth::user()->role_id == 3)
+    @elseif (Auth::user()->role_id == 2)
         @include('template.sidebarOperator')
     @endif
     <!-- ########## END: LEFT PANEL ########## -->

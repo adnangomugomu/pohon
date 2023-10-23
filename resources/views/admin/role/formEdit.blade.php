@@ -1,7 +1,7 @@
-<form action="#" onsubmit="event.preventDefault();doSubmit(this);">   
+<form action="#" onsubmit="event.preventDefault();doSubmit(this);">
     <div class="form-group">
         <label>Nama Role <small class="text-danger">*</small></label>
-        <input type="text" name="nama" class="form-control" placeholder="masukkan isian" required>
+        <input type="text" value="{{ $row->nama }}" name="nama" class="form-control" placeholder="masukkan isian" required>
     </div>
     <div class="text-right">
         <button type="submit" class="btn btn-primary">UPDATE</button>
@@ -9,10 +9,16 @@
 </form>
 
 <script>
+    $(document).ready(function() {
+        $('.form_select').select2({
+            width: '100%',
+        })
+    });
+
     function doSubmit(dt) {
 
         Swal.fire({
-            title: 'Simpan Data ?',
+            title: 'Update Data ?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Ya',
@@ -23,7 +29,10 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('super_admin.role.store') }}",
+                    headers: {
+                        'X-HTTP-Method-Override': 'PUT'
+                    },
+                    url: "{{ route('admin.role.update', $row->id) }}",
                     data: new FormData(dt),
                     dataType: "JSON",
                     contentType: false,

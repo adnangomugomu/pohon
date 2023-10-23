@@ -4,7 +4,7 @@
 
 @section('header', $header)
 @section('tombol')
-    <button class="btn btn-primary" onclick="tambahData();"><i class="fa fa-plus"></i> Tambah Data</button>
+    <a class="btn btn-primary" href="{{ route('admin.pohon.create') }}"><i class="fa fa-plus"></i> Tambah Data</a>
 @endsection
 @section('konten')
     <div class="br-pagebody">
@@ -19,10 +19,11 @@
                                         <th class="text-white" style="width: 30px;">NO</th>
                                         <th class="text-white">NAMA POHON</th>
                                         <th class="text-white">LOKASI</th>
+                                        <th class="text-white">KODE</th>
+                                        <th class="text-white">MAP</th>
                                         <th class="text-white">JENIS</th>
-                                        <th class="text-white">KONDISI</th>
-                                        <th class="text-white">TINGGI (M)</th>
-                                        <th class="text-white">DIAMETER (Cm)</th>
+                                        <th class="text-white">DATA</th>
+                                        <th class="text-white">FOTO</th>
                                         <th class="text-white" style="width: 50px;">AKSI</th>
                                     </tr>
                                 </thead>
@@ -106,52 +107,6 @@
             })
             $('.dataTables_length select').select2({
                 minimumResultsForSearch: Infinity
-            });
-        }
-
-        function tambahData() {
-            $.ajax({
-                type: "GET",
-                url: "{{ route('admin.pohon.create') }}",
-                dataType: "JSON",
-                data: {},
-                beforeSend: function(res) {
-                    beforeLoading(res);
-                },
-                error: function(res) {
-                    errorLoading(res);
-                },
-                success: function(res) {
-                    Swal.close();
-                    show_modal_custom({
-                        judul: 'Tambah Data Pohon',
-                        html: res.html,
-                        size: 'modal-lg',
-                    });
-                }
-            });
-        }
-
-        function editData(id) {
-            $.ajax({
-                type: "GET",
-                url: "{{ route('admin.pohon.edit', '') }}/" + id,
-                dataType: "JSON",
-                data: {},
-                beforeSend: function(res) {
-                    beforeLoading(res);
-                },
-                error: function(res) {
-                    errorLoading(res);
-                },
-                success: function(res) {
-                    Swal.close();
-                    show_modal_custom({
-                        judul: 'Edit Data Pohon',
-                        html: res.html,
-                        size: 'modal-lg',
-                    });
-                }
             });
         }
 

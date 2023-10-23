@@ -34,13 +34,17 @@ class Pohon extends Model
     {
         parent::boot();
 
+        static::deleting(function ($user) {
+            $user->foto()->delete();
+        });
+
         static::addGlobalScope('order', function (EloquentBuilder $builder) {
             $builder->orderBy('id', 'desc');
         });
     }
 
-    public function user()
+    public function foto()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->hasMany(Pohon_foto::class, 'pohon_id', 'id');
     }
 }

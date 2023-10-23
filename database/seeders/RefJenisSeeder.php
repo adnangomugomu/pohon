@@ -3,24 +3,23 @@
 namespace Database\Seeders;
 
 use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class RoleSeeder extends Seeder
+class RefJenisSeeder extends Seeder
 {
 
     public function run()
     {
-        DB::table('role')->insert(
+        DB::table('ref_jenis')->insert(
             [              
                 [
-                    'nama' => 'admin',
+                    'nama' => 'jenis 1',
                     'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                     'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 ],
                 [
-                    'nama' => 'operator',
+                    'nama' => 'jenis 2',
                     'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                     'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 ],

@@ -28,9 +28,8 @@ class AuthController extends Controller
 
             $link = '/404';
 
-            if (Auth::user()->role_id == 1) $link = route('super_admin.dashboard');
-            elseif (Auth::user()->role_id == 2) $link = route('admin.dashboard');
-            elseif (Auth::user()->role_id == 3) $link = route('operator.dashboard');
+            if (Auth::user()->role_id == 1) $link = route('admin.dashboard');
+            elseif (Auth::user()->role_id == 2) $link = route('operator.dashboard');
 
             return response()->json([
                 'link' => $link,

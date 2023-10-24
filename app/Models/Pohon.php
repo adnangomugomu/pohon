@@ -12,35 +12,33 @@ class Pohon extends Model
 {
     use SoftDeletes;
     protected $table = 'pohon';
-    protected $geometry = ['koordinat'];
-    protected $geometryAsText = true;
-
-    public function newQuery($excludeDeleted = true)
-    {
-        if (!empty($this->geometry) && $this->geometryAsText === true) {
-            $raw = '';
-            foreach ($this->geometry as $column) {
-                $raw .= 'ST_AsText(`' . $this->table . '`.`' . $column . '`) as `' . $column . '`, ';
-            }
-            $raw = substr($raw, 0, -2);
-
-            return parent::newQuery($excludeDeleted)->addSelect('*', DB::raw($raw));
-        }
-
-        return parent::newQuery($excludeDeleted);
-    }
 
     protected static function boot()
     {
         parent::boot();
 
-        static::deleting(function ($user) {
-            $user->foto()->delete();
+        static::deleting(function ($dt) {
+            $dt->foto()->delete();
         });
 
         static::addGlobalScope('order', function (EloquentBuilder $builder) {
             $builder->orderBy('id', 'desc');
         });
+    }
+
+    public function jenis()
+    {
+        return $this->belongsTo(Ref_jenis::class, 'jenis_id', 'id');
+    }
+
+    public function kecamatan()
+    {
+        return $this->belongsTo(Kecamatan::class, 'kode_kec', 'kode_wilayah');
+    }
+
+    public function kelurahan()
+    {
+        return $this->belongsTo(Kelurahan::class, 'kode_kel', 'kode_wilayah');
     }
 
     public function foto()

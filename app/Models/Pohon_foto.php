@@ -20,7 +20,7 @@ class Pohon_foto extends Model
         });
 
         static::addGlobalScope('order', function (EloquentBuilder $builder) {
-            $builder->orderBy('nama', 'asc');
+            $builder->orderBy('id', 'asc');
         });
     }
 }

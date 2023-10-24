@@ -117,13 +117,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Akar Pohon <small class="text-danger">*</small></label>
-                            <input type="text" value="" name="tinggi" class="form-control rupiah" placeholder="masukkan isian" required>
+                            <input type="text" value="" name="akar" class="form-control" placeholder="masukkan isian" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Kondisi Pohon <small class="text-danger">*</small></label>
-                            <input type="text" value="" name="diameter" class="form-control rupiah" placeholder="masukkan isian" required>
+                            <input type="text" value="" name="kondisi" class="form-control" placeholder="masukkan isian" required>
                         </div>
                     </div>
                 </div>
@@ -170,7 +170,7 @@
 
                     $.ajax({
                         type: "POST",
-                        url: "{{ route('admin.pohon.store') }}",
+                        url: "{{ route('admin.pohon.store', $row->id) }}",
                         data: new FormData(dt),
                         dataType: "JSON",
                         contentType: false,
@@ -188,7 +188,7 @@
                                     showConfirmButton: true,
                                 })
                                 .then(() => {
-                                    history.go(-1);
+                                    location.href = "{{ route('admin.pohon') }}"
                                 })
                         }
                     });

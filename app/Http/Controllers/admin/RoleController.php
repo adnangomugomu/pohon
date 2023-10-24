@@ -144,7 +144,6 @@ class RoleController extends Controller
             $data->delete();
             return response()->json([
                 'status' => 'success',
-                'data' => $data,
             ], 200);
         } else {
             return response()->json([

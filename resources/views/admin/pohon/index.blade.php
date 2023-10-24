@@ -77,21 +77,25 @@
                         name: 'lokasi'
                     },
                     {
-                        data: 'jenis_pohon',
-                        name: 'jenis_pohon'
+                        data: 'kode',
+                        name: 'kode'
                     },
                     {
-                        data: 'kondisi',
-                        name: 'kondisi'
+                        data: 'map',
+                        name: 'map'
                     },
                     {
-                        data: 'tinggi',
-                        name: 'tinggi'
+                        data: 'jenis.nama',
+                        name: 'jenis'
                     },
                     {
-                        data: 'diameter',
-                        name: 'diameter'
-                    },                  
+                        data: 'isi_data',
+                        name: 'isi_data'
+                    },
+                    {
+                        data: 'tombol_foto',
+                        name: 'tombol_foto'
+                    },
                     {
                         data: 'action',
                         name: 'action'
@@ -103,11 +107,16 @@
                     className: 'text-center',
                     orderable: false,
                     searchable: false,
-                }],
+                }, ],
             })
             $('.dataTables_length select').select2({
                 minimumResultsForSearch: Infinity
             });
+        }
+
+        function editData(id) {
+            var link = "{{ route('admin.pohon.edit', '') }}/" + id;
+            location.href = link;
         }
 
         function detailData(id) {

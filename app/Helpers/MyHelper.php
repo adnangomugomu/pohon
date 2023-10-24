@@ -21,3 +21,10 @@ function rupiah($data, $is_koma = false)
         }
     }
 }
+
+function clear_koma($dt)
+{
+    $data = str_replace('.', '', $dt);
+    $data = str_replace(',', '.', $data);
+    return $data;
+}

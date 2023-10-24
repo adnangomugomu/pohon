@@ -11,16 +11,19 @@ return new class extends Migration
         Schema::create('pohon', function (Blueprint $table) {
             $table->id();
             $table->string('nama_indo');
-            $table->string('kode')->nullable();
-            $table->string('kode_desa')->nullable();
-            $table->point('koordinat')->nullable();;
-            $table->string('lokasi')->nullable();
             $table->string('nama_latin')->nullable();
+            $table->string('kode_kec')->nullable();
+            $table->string('kode_kel')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
+            $table->string('kode')->nullable();
+            $table->point('koordinat')->nullable();;
             $table->string('jenis_id')->nullable();
+            $table->string('lokasi')->nullable();
             $table->decimal('tinggi')->nullable();
             $table->decimal('diameter')->nullable();
-            $table->decimal('akar')->nullable();
-            $table->text('kondisi')->nullable();
+            $table->string('akar')->nullable();
+            $table->string('kondisi')->nullable();
             $table->text('detail')->nullable();
             $table->timestamps();
             $table->softDeletes();

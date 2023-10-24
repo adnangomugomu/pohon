@@ -170,7 +170,7 @@
 
                     $.ajax({
                         type: "POST",
-                        url: "{{ route('admin.pohon.store', $row->id) }}",
+                        url: "{{ route('admin.pohon.store') }}",
                         data: new FormData(dt),
                         dataType: "JSON",
                         contentType: false,

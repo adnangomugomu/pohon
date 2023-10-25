@@ -4,6 +4,7 @@
 
 @section('header', $header)
 @section('tombol')
+    <a class="btn btn-success mr-2" target="_blank" href="{{ route('admin.pohon.excel') }}"><i class="fa fa-print"></i> Export</a>
     <a class="btn btn-primary" href="{{ route('admin.pohon.create') }}"><i class="fa fa-plus"></i> Tambah Data</a>
 @endsection
 @section('konten')

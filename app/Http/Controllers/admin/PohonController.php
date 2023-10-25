@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Pohon;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
-use App\Models\Pohon;
 use App\Models\Ref_jenis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class PohonController extends Controller
 {
@@ -225,6 +231,83 @@ class PohonController extends Controller
             'status' => 'success',
             'html' => $html,
         ], 200);
+    }
+
+    public function export()
+    {
+        $spreadsheet = new Spreadsheet();
+
+        $sheet = $spreadsheet->createSheet(0);
+        $sheet->setTitle('DATA POHON');
+        $sheet->setCellValue('A1', 'REKAP DATA POHON');
+
+        // judul
+        $sheet->setCellValue('A3', 'NO');
+        $sheet->setCellValue('B3', 'NAMA INDONESIA');
+        $sheet->setCellValue('C3', 'NAMA LATIN');
+        $sheet->setCellValue('D3', 'KECAMATAN');
+        $sheet->setCellValue('E3', 'KELURAHAN');
+        $sheet->setCellValue('F3', 'LOKASI');
+        $sheet->setCellValue('G3', 'KODE');
+        $sheet->setCellValue('H3', 'JENIS POHON');
+        $sheet->setCellValue('I3', 'TINGGI (cm)');
+        $sheet->setCellValue('J3', 'DIAMETER (cm)');
+        $sheet->setCellValue('K3', 'AKAR');
+        $sheet->setCellValue('L3', 'KONDISI');
+        $sheet->setCellValue('M3', 'DETAIL POHON');
+        // end judul
+        $sheet->getStyle('A3:M3')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+
+        $sheet->getStyle('A3:M3')->applyFromArray([
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => [
+                    'argb' => 'FF9902',
+                ],
+            ],
+        ]);
+
+        $sheet->getStyle('A3:M3')->getAlignment()->setHorizontal('center');
+
+        foreach (['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'] as $column) $sheet->getColumnDimension($column)->setAutoSize(true);
+
+        $awal = 4;
+        $no = 1;
+
+        $data = Pohon::with(['jenis', 'kecamatan', 'kelurahan'])->get();
+
+        foreach ($data as $row) {
+            $sheet
+                ->setCellValue('A' . $awal, $no++)
+                ->setCellValue('B' . $awal, $row->nama_indo)
+                ->setCellValue('C' . $awal, $row->nama_latin)
+                ->setCellValue('D' . $awal, $row->kecamatan->nama)
+                ->setCellValue('E' . $awal, $row->kelurahan->nama)
+                ->setCellValue('F' . $awal, $row->lokasi)
+                ->setCellValue('G' . $awal, $row->kode)
+                ->setCellValue('H' . $awal, $row->jenis->nama)
+                ->setCellValue('I' . $awal, $row->tinggi)
+                ->setCellValue('J' . $awal, $row->diameter)
+                ->setCellValue('K' . $awal, $row->akar)
+                ->setCellValue('L' . $awal, $row->kondisi)
+                ->setCellValue('M' . $awal, $row->detail);
+            $sheet->getStyle('A' . $awal . ':M' . $awal)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+            $awal++;
+        }
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Rekap Data Pohon.xlsx"');
+        header('Cache-Control: max-age=0');
+        header('Cache-Control: max-age=1');
+
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        exit;
     }
 
     public function getDataTable(Request $request)

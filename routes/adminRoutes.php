@@ -16,6 +16,7 @@ Route::prefix('admin')->middleware(['auth', 'cekRole:1'])->group(function () {
         Route::get('/create', [PohonController::class, 'create'])->name('admin.pohon.create');
         Route::get('/detail/{id}', [PohonController::class, 'show'])->name('admin.pohon.detail');
         Route::get('/edit/{id}', [PohonController::class, 'edit'])->name('admin.pohon.edit');
+        Route::get('/peta/{id}', [PohonController::class, 'peta'])->name('admin.pohon.peta');
         Route::post('/', [PohonController::class, 'store'])->name('admin.pohon.store');
         Route::put('/{id}', [PohonController::class, 'update'])->name('admin.pohon.update');
         Route::delete('/{id}', [PohonController::class, 'destroy'])->name('admin.pohon.delete');

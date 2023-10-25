@@ -216,6 +216,17 @@ class PohonController extends Controller
         }
     }
 
+    public function peta(Request $request, $id)
+    {
+        $data['row'] = Pohon::findOrFail($id);
+        $html = view('admin.pohon.peta', $data)->render();
+
+        return response()->json([
+            'status' => 'success',
+            'html' => $html,
+        ], 200);
+    }
+
     public function getDataTable(Request $request)
     {
         $data = Pohon::with(['jenis', 'kecamatan', 'kelurahan'])->get();

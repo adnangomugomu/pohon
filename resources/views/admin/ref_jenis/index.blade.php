@@ -8,7 +8,7 @@
 @endsection
 @section('konten')
     <div class="br-pagebody">
-        <div class="br-section-wrapper">
+        <div class="br-section-wrapper p-0">
             <section class="card">
                 <div class="card-content">
                     <div class="card-body">

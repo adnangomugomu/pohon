@@ -34,7 +34,7 @@
                         <i class="ion ion-ios-paper-outline tx-60 lh-0 tx-white op-7"></i>
                         <div class="mg-l-20">
                             <p class="tx-10 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10">Laporan</p>
-                            <p class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1">100</p>
+                            <p class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1">{{ $total_laporan }}</p>
                         </div>
                     </div>
                 </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Laporan;
 use App\Models\Pohon;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ class DashboardController extends Controller
 
         $data['total_user'] = User::count();
         $data['total_pohon'] = Pohon::count();
+        $data['total_laporan'] = Laporan::count();
 
         return view('admin.dashboard', $data);
     }

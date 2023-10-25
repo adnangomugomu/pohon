@@ -14,11 +14,11 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped table-custom" style="width: 100%" id="table-data">
-                                <thead>
+                                <thead class="thead-colored thead-primary">
                                     <tr>
-                                        <th style="width: 30px;">NO</th>
-                                        <th>NAMA</th>
-                                        <th style="width: 50px;">AKSI</th>
+                                        <th class="text-white" style="width: 30px;">NO</th>
+                                        <th class="text-white">NAMA</th>
+                                        <th class="text-white" style="width: 50px;">AKSI</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>

@@ -8,6 +8,7 @@
 <div class="form-group">
     <div class="d-flex justify-content-between">
         <div>Koordinat <small class="text-danger">*</small></div>
+        <button class="btn btn-link" onclick="window.open('https://www.google.com/maps/dir/?api=1&amp;destination={{ $row->latitude }},{{ $row->longitude }}')">Penjunjuk Arah</button>
     </div>
     <div id="map" class="rounded border border-secondary"></div>
 </div>

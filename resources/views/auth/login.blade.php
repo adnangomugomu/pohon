@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <meta name="robots" content="noindex"/>
+    <meta name="robots" content="noindex" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="description" content="{{ env('WEB_DESKRIPSI') }}">
     <meta name="keywords" content="{{ env('WEB_KEYWORDS') }}">
@@ -33,15 +33,16 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('template') }}/app-assets/css/core/menu/menu-types/vertical-menu.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('template') }}/app-assets/css/pages/authentication.css">
     <!-- END: Page CSS-->
-
-    <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('template') }}/assets/css/style.css">
-    <!-- END: Custom CSS-->
     <style>
         @media screen and (max-width: 450px) {
             /* html body.blank-page .content-wrapper .flexbox-container {
                 height: 65vh !important;
             } */
+        }
+
+        html body.bg-full-screen-image {
+            background: url("{{ asset('img/auth-bg.jpg') }}") no-repeat center center;
+            background-size: cover;
         }
     </style>
 </head>

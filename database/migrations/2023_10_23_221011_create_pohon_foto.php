@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('pohon_id');
             $table->string('foto');
+            $table->string('caption')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

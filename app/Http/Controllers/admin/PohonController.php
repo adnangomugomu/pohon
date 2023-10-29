@@ -206,6 +206,46 @@ class PohonController extends Controller
         }
     }
 
+    public function verifikasi(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            $validator = Validator::make($request->all(), [
+                'jenis' => 'required|in:verif,batal',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'msg' => $validator->getMessageBag()->all(),
+                ], 400);
+            } else {
+                $data = Pohon::findOrFail($id);
+
+                if ($request->jenis == 'verif') {
+                    $data->is_verif = '1';
+                } else {
+                    $data->is_verif = '0';
+                }
+
+                $data->save();
+                DB::commit();
+
+                return response()->json([
+                    'status' => 'success',
+                ], 200);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::warning($e->getMessage());
+
+            return response()->json([
+                'status' => 'failed',
+                'msg' => 'Terjadi kesalahan',
+            ], 500);
+        }
+    }
+
     public function destroy($id)
     {
         $data = Pohon::findOrFail($id);
@@ -317,8 +357,9 @@ class PohonController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->editColumn('nama', function ($dt) {
-                return $dt->nama_indo .
-                    '<div class="text-success">latin :' . $dt->nama_latin . '</div>';
+                return $dt->nama_indo
+                    . '<div>Latin :<span class="text-info">' . $dt->nama_latin . '</span></div>'
+                    . '<div>Kode :<span class="text-warning">' . $dt->kode . '</span></div>';
             })
             ->editColumn('lokasi', function ($dt) {
                 return 'Kec. ' . $dt->kecamatan->nama
@@ -326,28 +367,42 @@ class PohonController extends Controller
                     . '<div><i class="fa fa-map-signs"></i> ' . $dt->lokasi . '</div>';
             })
             ->editColumn('map', function ($dt) {
-                return '<button class="btn btn-primary btn-sm" onclick="lihat_map(\'' . $dt->id . '\')"><i class="fa fa-map"></i> Maps</button>';
+                return '<button class="btn btn-primary btn-sm" onclick="lihat_map(\'' . $dt->id . '\')"><i class="fa fa-map"></i> Maps</button>'
+                    . '<div class="mt-1">
+                        <button class="btn btn-primary btn-sm ml-1" onclick="lihat_foto(\'' . $dt->id . '\')"><i class="fa fa-camera"></i> Foto</button>
+                    </div>';
             })
-            ->editColumn('tombol_foto', function ($dt) {
-                return '<button class="btn btn-primary btn-sm" onclick="lihat_foto(\'' . $dt->id . '\')"><i class="fa fa-camera"></i> Foto</button>';
+            ->editColumn('is_verif', function ($dt) {
+                if ($dt->is_verif == '0') {
+                    return '<div class="text-danger">Belum Diverifikasi</div>';
+                } else {
+                    return '<div class="text-success">Terverifikasi</div>';
+                }
             })
             ->editColumn('isi_data', function ($dt) {
                 return 'Tinggi (cm) : ' . rupiah($dt->tinggi, true)
                     . '<div>Diameter (cm) : ' . rupiah($dt->diameter, true) . '</div>';
             })
             ->addColumn('action', function ($dt) {
+                if ($dt->is_verif == 0) {
+                    $btn_is_verif = '<span class="dropdown-item text-success" onclick="verif(\'verif\',\'' . $dt->id . '\');"><i class="fa fa-check mr-1"></i> Verifikasi</span>';
+                } else {
+                    $btn_is_verif = '<span class="dropdown-item text-danger" onclick="verif(\'batal\',\'' . $dt->id . '\');"><i class="fa fa-times mr-1"></i> Batalkan Verifikasi</span>';
+                }
+
                 return '                    
                     <div class="dropdown">
                         <button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi</button>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu dropdown-menu-right">
                             <span class="dropdown-item" onclick="editData(\'' . $dt->id . '\');"><i class="fa fa-edit mr-1"></i> Edit</span>
                             <span class="dropdown-item" onclick="detailData(\'' . $dt->id . '\');"><i class="fa fa-info-circle mr-1"></i> Detail</span>
+                            ' . $btn_is_verif . '
                         </div>
                     </div>
                 ';
             })
             ->escapeColumns('*')
-            ->rawColumns(['map', 'nama', 'tombol_foto', 'lokasi', 'action', 'isi_data'])
+            ->rawColumns(['map', 'nama', 'is_verif', 'lokasi', 'action', 'isi_data'])
             ->make(true);
-    } //
+    }
 }

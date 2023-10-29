@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\FotoPohonController;
 use App\Http\Controllers\admin\PohonController;
 use App\Http\Controllers\admin\RefJenisController;
 use App\Http\Controllers\admin\RegistrasiController;
@@ -20,7 +21,16 @@ Route::prefix('admin')->middleware(['auth', 'cekRole:1'])->group(function () {
         Route::get('/export-excel', [PohonController::class, 'export'])->name('admin.pohon.excel');
         Route::post('/', [PohonController::class, 'store'])->name('admin.pohon.store');
         Route::put('/{id}', [PohonController::class, 'update'])->name('admin.pohon.update');
+        Route::put('/verifikasi/{id}', [PohonController::class, 'verifikasi'])->name('admin.pohon.verif');
         Route::delete('/{id}', [PohonController::class, 'destroy'])->name('admin.pohon.delete');
+    });
+
+    Route::prefix('pohon-foto')->group(function () {
+        Route::get('/{id}', [FotoPohonController::class, 'show'])->name('admin.pohon.foto');
+        Route::get('/get-table/{id}', [FotoPohonController::class, 'getDataTable'])->name('admin.pohon.foto.getTable');
+        Route::post('/{id}', [FotoPohonController::class, 'store'])->name('admin.pohon.foto.store');
+        Route::put('/{id}', [FotoPohonController::class, 'update'])->name('admin.pohon.foto.update');
+        Route::delete('/{id}', [FotoPohonController::class, 'destroy'])->name('admin.pohon.foto.delete');
     });
 
     Route::prefix('referensi-jenis-pohon')->group(function () {
@@ -34,7 +44,7 @@ Route::prefix('admin')->middleware(['auth', 'cekRole:1'])->group(function () {
         Route::delete('/{id}', [RefJenisController::class, 'destroy'])->name('admin.ref_jenis.delete');
     });
 
-    Route::prefix('role')->group(function(){
+    Route::prefix('role')->group(function () {
         Route::get('/get-table', [RoleController::class, 'getDataTable'])->name('admin.role.getTable');
         Route::get('/', [RoleController::class, 'index'])->name('admin.role');
         Route::get('/create', [RoleController::class, 'create'])->name('admin.role.create');
@@ -45,7 +55,7 @@ Route::prefix('admin')->middleware(['auth', 'cekRole:1'])->group(function () {
         Route::delete('/{id}', [RoleController::class, 'destroy'])->name('admin.role.delete');
     });
 
-    Route::prefix('registrasi')->group(function(){
+    Route::prefix('registrasi')->group(function () {
         Route::get('/get-table', [RegistrasiController::class, 'getDataTable'])->name('admin.registrasi.getTable');
         Route::get('/reset-password/{id}', [RegistrasiController::class, 'resetPassword'])->name('admin.registrasi.resetPassword');
         Route::get('/', [RegistrasiController::class, 'index'])->name('admin.registrasi');
@@ -55,5 +65,4 @@ Route::prefix('admin')->middleware(['auth', 'cekRole:1'])->group(function () {
         Route::post('/', [RegistrasiController::class, 'store'])->name('admin.registrasi.store');
         Route::delete('/{id}', [RegistrasiController::class, 'destroy'])->name('admin.registrasi.delete');
     });
-
 });

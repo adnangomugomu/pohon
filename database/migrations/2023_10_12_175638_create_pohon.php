@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->string('kode')->nullable();
-            $table->point('koordinat')->nullable();;
+            $table->point('koordinat')->nullable();
             $table->string('jenis_id')->nullable();
             $table->string('lokasi')->nullable();
             $table->decimal('tinggi')->nullable();
@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('akar')->nullable();
             $table->string('kondisi')->nullable();
             $table->text('detail')->nullable();
+            $table->enum('is_verif', ['0', '1'])->default('0');
+            $table->date('tgl_verif')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

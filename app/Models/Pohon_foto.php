@@ -15,10 +15,6 @@ class Pohon_foto extends Model
     {
         parent::boot();
 
-        static::deleting(function ($data) {
-            $data->user()->delete();
-        });
-
         static::addGlobalScope('order', function (EloquentBuilder $builder) {
             $builder->orderBy('id', 'asc');
         });

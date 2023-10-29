@@ -4,7 +4,7 @@
 
 @section('header', $header)
 @section('tombol')
-    <a class="btn btn-success mr-2" target="_blank" href="{{ route('admin.pohon.excel') }}"><i class="fa fa-print"></i> Export</a>
+    <a class="btn btn-success mr-2" target="_blank" href="{{ route('admin.pohon.excel') }}"><i class="fa fa-print"></i> Cetak Excel</a>
     <a class="btn btn-primary" href="{{ route('admin.pohon.create') }}"><i class="fa fa-plus"></i> Tambah Data</a>
 @endsection
 @section('konten')
@@ -20,11 +20,10 @@
                                         <th class="text-white" style="width: 30px;">NO</th>
                                         <th class="text-white">NAMA POHON</th>
                                         <th class="text-white">LOKASI</th>
-                                        <th class="text-white">KODE</th>
-                                        <th class="text-white">MAP</th>
+                                        <th class="text-white">MENU</th>
                                         <th class="text-white">JENIS</th>
                                         <th class="text-white">DATA</th>
-                                        <th class="text-white">FOTO</th>
+                                        <th class="text-white">STATUS VERIFIKASI</th>
                                         <th class="text-white" style="width: 50px;">AKSI</th>
                                     </tr>
                                 </thead>
@@ -84,10 +83,6 @@
                         name: 'lokasi'
                     },
                     {
-                        data: 'kode',
-                        name: 'kode'
-                    },
-                    {
                         data: 'map',
                         name: 'map'
                     },
@@ -100,8 +95,8 @@
                         name: 'isi_data'
                     },
                     {
-                        data: 'tombol_foto',
-                        name: 'tombol_foto'
+                        data: 'is_verif',
+                        name: 'is_verif'
                     },
                     {
                         data: 'action',
@@ -172,6 +167,29 @@
             });
         }
 
+        function lihat_foto(id) {
+            $.ajax({
+                type: "GET",
+                url: "{{ route('admin.pohon.foto', '') }}/" + id,
+                dataType: "JSON",
+                data: {},
+                beforeSend: function(res) {
+                    beforeLoading(res);
+                },
+                error: function(res) {
+                    errorLoading(res);
+                },
+                success: function(res) {
+                    Swal.close();
+                    show_modal_custom({
+                        judul: 'Foto Pohon',
+                        html: res.html,
+                        size: 'modal-lg',
+                    });
+                }
+            });
+        }
+
         function hapusData(id) {
             Swal.fire({
                 title: 'Hapus Data Pohon ?',
@@ -196,6 +214,50 @@
                             Swal.fire({
                                     icon: 'success',
                                     title: 'Berhasil dihapus',
+                                    showConfirmButton: true,
+                                })
+                                .then(() => {
+                                    $('#modal_custom').modal('hide');
+                                    $('#table-data').DataTable().ajax.reload();
+                                });
+                        }
+                    });
+                }
+            })
+        }
+
+        function verif(jenis, id) {
+            if (jenis == 'verif') {
+                var text = "Verifikasi data pohon ?";
+            } else {
+                var text = "Batalkan Verifikasi ?";
+            }
+            Swal.fire({
+                title: text,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: "PUT",
+                        url: "{{ route('admin.pohon.verif', '') }}/" + id,
+                        dataType: "JSON",
+                        data: {
+                            jenis: jenis,
+                        },
+                        beforeSend: function(res) {
+                            beforeLoading(res);
+                        },
+                        error: function(res) {
+                            errorLoading(res);
+                        },
+                        success: function(res) {
+                            Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
                                     showConfirmButton: true,
                                 })
                                 .then(() => {

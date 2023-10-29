@@ -8,8 +8,8 @@
 
     <link rel="apple-touch-icon" href="{{ asset('img/icon.png') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/icon.png') }}">
-    <meta name="robots" content="noindex"/>
-    
+    <meta name="robots" content="noindex" />
+
     <!-- Twitter -->
     <meta name="twitter:site" content="@themepixels">
     <meta name="twitter:creator" content="@themepixels">
@@ -170,6 +170,9 @@
     <!-- select2 -->
     <link rel="stylesheet" type="text/css" href="{{ asset('template') }}/app-assets/vendors/css/forms/select/select2.min.css">
     <script src="{{ asset('template-new') }}/lib/select2/js/select2.min.js"></script>
+    <!-- toastr -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="{{ asset('assets/my_app.js?time=') . time() }}"></script>
     <script>

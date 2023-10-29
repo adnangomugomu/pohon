@@ -125,7 +125,7 @@ class PohonController extends Controller
 
     public function edit($id)
     {
-        $row = Pohon::with(['jenis', 'kecamatan', 'kelurahan'])->findOrFail($id);
+        $row = Pohon::with(['jenis', 'kecamatan', 'kelurahan'])->where('is_verif', '0')->findOrFail($id);
         if ($row) {
             $data = [
                 'title' => 'Form Data Pohon Update',
@@ -386,15 +386,17 @@ class PohonController extends Controller
             ->addColumn('action', function ($dt) {
                 if ($dt->is_verif == 0) {
                     $btn_is_verif = '<span class="dropdown-item text-success" onclick="verif(\'verif\',\'' . $dt->id . '\');"><i class="fa fa-check mr-1"></i> Verifikasi</span>';
+                    $btn_edit = '<span class="dropdown-item" onclick="editData(\'' . $dt->id . '\');"><i class="fa fa-edit mr-1"></i> Edit</span>';
                 } else {
                     $btn_is_verif = '<span class="dropdown-item text-danger" onclick="verif(\'batal\',\'' . $dt->id . '\');"><i class="fa fa-times mr-1"></i> Batalkan Verifikasi</span>';
+                    $btn_edit = '';
                 }
 
                 return '                    
                     <div class="dropdown">
                         <button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi</button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <span class="dropdown-item" onclick="editData(\'' . $dt->id . '\');"><i class="fa fa-edit mr-1"></i> Edit</span>
+                            ' . $btn_edit . '
                             <span class="dropdown-item" onclick="detailData(\'' . $dt->id . '\');"><i class="fa fa-info-circle mr-1"></i> Detail</span>
                             ' . $btn_is_verif . '
                         </div>

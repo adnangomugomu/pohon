@@ -73,8 +73,16 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12 text-right">
-        <button type="button" onclick="hapusData('{{ $row->id }}');" class="btn btn-danger">Hapus Data</button>
+@if ($row->is_verif == 0)
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="button" onclick="hapusData('{{ $row->id }}');" class="btn btn-danger">Hapus Data</button>
+        </div>
     </div>
-</div>
+@else
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="button" class="btn btn-success">Sudah Diverifikasi</button>
+        </div>
+    </div>
+@endif

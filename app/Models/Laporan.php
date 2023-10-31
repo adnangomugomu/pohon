@@ -10,4 +10,9 @@ class Laporan extends Model
 {
     use SoftDeletes;
     protected $table = 'laporan';
+
+    public function status()
+    {
+        return $this->belongsTo(Ref_status::class, 'status_id', 'id');
+    }
 }

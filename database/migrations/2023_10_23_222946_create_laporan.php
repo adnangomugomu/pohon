@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('laporan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pohon_id');
             $table->foreignId('status_id');
             $table->enum('jenis', ['masyarakat', 'internal']);
             $table->string('nama');
@@ -24,9 +23,6 @@ return new class extends Migration
             $table->text('deskripsi');
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('pohon_id')->references('id')->on('pohon')
-                ->onUpdate('cascade')->onDelete('cascade');
 
             $table->foreign('status_id')->references('id')->on('ref_status')
                 ->onUpdate('cascade')->onDelete('cascade');

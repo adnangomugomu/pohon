@@ -3,6 +3,15 @@
 @section('title', $title)
 @section('header', $header)
 
+@section('style')
+    <style>
+        #grafik_laporan {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+@endsection
+
 @section('konten')
     <div class="br-pagebody">
         <div class="row">
@@ -40,8 +49,120 @@
                 </div>
             </div>
         </div>
-        {{-- <div class="br-section-wrapper">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusamus rerum necessitatibus illum fuga aspernatur excepturi tempore minus saepe amet odit, dolore omnis alias dignissimos assumenda ut dicta quaerat, aliquam dolorum!
-        </div> --}}
+
+        <div class="row mt-4 mb-4">
+            <div class="col-md-12">
+                <div class="card bd-0">
+                    <div class="card-header tx-medium bd-0 tx-white bg-indigo">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>Grafik Jumlah Laporan</div>
+                            <div style="width: 200px;">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <select id="filter_bulan" class="form-control js_select2" onchange="load_grafik_laporan();">
+                                            @foreach ($bulan as $val => $dt)
+                                                <option {{ date('m') == $dt ? 'selected' : '' }} value="{{ $dt }}">{{ $val }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select id="filter_tahun" class="form-control js_select2" onchange="load_grafik_laporan();">
+                                            @foreach ($tahun as $dt)
+                                                <option {{ date('Y') == $dt ? 'selected' : '' }} value="{{ $dt }}">{{ $dt }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body bd bd-t-0 rounded-bottom">
+                        <div id="grafik_laporan"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+@endsection
+
+@section('script')
+    <script src="https://code.highcharts.com/highcharts.js" type="text/javascript"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/full-screen.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.js_select2').select2({
+                width: '100%',
+            })
+            load_grafik_laporan();
+        });
+
+        function load_grafik_laporan() {
+            var tahun = $('#filter_tahun').val();
+            var bulan = $('#filter_bulan').val();
+            var nm_bulan = $('#filter_bulan').find(':selected').text();
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('admin.grafik_laporan') }}",
+                data: {
+                    bulan: bulan,
+                    tahun: tahun,
+                },
+                dataType: "JSON",
+                success: function(res) {
+                    if (res.status == 'success') {
+
+                        Highcharts.chart('grafik_laporan', {
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                text: nm_bulan + " " + tahun,
+                            },
+                            xAxis: {
+                                categories: res.grafik.kategori
+                            },
+                            yAxis: {
+                                title: {
+                                    text: 'Laporan'
+                                },
+                                labels: {
+                                    formatter: function() {
+                                        var value = this.value;
+                                        var suffix = '';
+                                        if (value >= 1000000000) {
+                                            value = value / 1000000000;
+                                            suffix = 'M';
+                                        } else if (value >= 1000000) {
+                                            value = value / 1000000;
+                                            suffix = 'JT';
+                                        } else if (value >= 1000) {
+                                            value = value / 1000;
+                                            suffix = 'RB';
+                                        }
+                                        return value + ' ' + suffix;
+                                    }
+                                }
+                            },
+                            series: [{
+                                name: 'Laporan',
+                                data: res.grafik.series,
+                                colorByPoint: true,
+                                dataLabels: {
+                                    enabled: true,
+                                    inside: true,
+                                    formatter: function() {
+                                        return Highcharts.numberFormat(this.y, 0, ',', '.');
+                                    }
+                                }
+                            }]
+                        });
+
+                    }
+                }
+            });
+        }
+    </script>
 @endsection

@@ -2,14 +2,20 @@
 
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\FotoPohonController;
+use App\Http\Controllers\admin\LaporanInternalController;
+use App\Http\Controllers\admin\LaporanMasyarakatController;
 use App\Http\Controllers\admin\PohonController;
 use App\Http\Controllers\admin\RefJenisController;
 use App\Http\Controllers\admin\RegistrasiController;
 use App\Http\Controllers\admin\RoleController;
+use App\Http\Controllers\PetaController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->middleware(['auth', 'cekRole:1'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::prefix('dashboard')->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
+        Route::post('/grafik-laporan', [DashboardController::class, 'grafik_laporan'])->name('admin.grafik_laporan');
+    });
 
     Route::prefix('pohon')->group(function () {
         Route::get('/get-table', [PohonController::class, 'getDataTable'])->name('admin.pohon.getTable');
@@ -23,6 +29,10 @@ Route::prefix('admin')->middleware(['auth', 'cekRole:1'])->group(function () {
         Route::put('/{id}', [PohonController::class, 'update'])->name('admin.pohon.update');
         Route::put('/verifikasi/{id}', [PohonController::class, 'verifikasi'])->name('admin.pohon.verif');
         Route::delete('/{id}', [PohonController::class, 'destroy'])->name('admin.pohon.delete');
+    });
+
+    Route::prefix('peta')->group(function () {
+        Route::get('/', [PetaController::class, 'index'])->name('admin.peta');
     });
 
     Route::prefix('pohon-foto')->group(function () {
@@ -42,6 +52,28 @@ Route::prefix('admin')->middleware(['auth', 'cekRole:1'])->group(function () {
         Route::post('/', [RefJenisController::class, 'store'])->name('admin.ref_jenis.store');
         Route::put('/{id}', [RefJenisController::class, 'update'])->name('admin.ref_jenis.update');
         Route::delete('/{id}', [RefJenisController::class, 'destroy'])->name('admin.ref_jenis.delete');
+    });
+
+    Route::prefix('laporan-internal')->group(function () {
+        Route::get('/get-table', [LaporanInternalController::class, 'getDataTable'])->name('admin.laporan_internal.getTable');
+        Route::get('/', [LaporanInternalController::class, 'index'])->name('admin.laporan_internal');
+        Route::get('/create', [LaporanInternalController::class, 'create'])->name('admin.laporan_internal.create');
+        Route::get('/detail/{id}', [LaporanInternalController::class, 'show'])->name('admin.laporan_internal.detail');
+        Route::get('/edit/{id}', [LaporanInternalController::class, 'edit'])->name('admin.laporan_internal.edit');
+        Route::get('/export-excel', [LaporanInternalController::class, 'export'])->name('admin.laporan_internal.excel');
+        Route::post('/', [LaporanInternalController::class, 'store'])->name('admin.laporan_internal.store');
+        Route::put('/{id}', [LaporanInternalController::class, 'update'])->name('admin.laporan_internal.update');
+        Route::put('/verifikasi/{id}', [LaporanInternalController::class, 'verifikasi'])->name('admin.laporan_internal.verif');
+        Route::delete('/{id}', [LaporanInternalController::class, 'destroy'])->name('admin.laporan_internal.delete');
+    });
+
+    Route::prefix('laporan-masyarakat')->group(function () {
+        Route::get('/get-table', [LaporanMasyarakatController::class, 'getDataTable'])->name('admin.laporan_masyarakat.getTable');
+        Route::get('/', [LaporanMasyarakatController::class, 'index'])->name('admin.laporan_masyarakat');
+        Route::get('/detail/{id}', [LaporanMasyarakatController::class, 'show'])->name('admin.laporan_masyarakat.detail');
+        Route::get('/export-excel', [LaporanMasyarakatController::class, 'export'])->name('admin.laporan_masyarakat.excel');
+        Route::put('/verifikasi/{id}', [LaporanMasyarakatController::class, 'verifikasi'])->name('admin.laporan_masyarakat.verif');
+        Route::delete('/{id}', [LaporanMasyarakatController::class, 'destroy'])->name('admin.laporan_masyarakat.delete');
     });
 
     Route::prefix('role')->group(function () {

@@ -8,6 +8,7 @@ class PetaController extends Controller
 {
     public function index()
     {
-        return 123;
+        $data['title'] = "Peta Persebaran Data Pohon";
+        return view('admin.peta.index', $data);
     }
 }

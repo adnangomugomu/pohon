@@ -134,7 +134,7 @@
                 <button class="btn btn-light btn-sm btn-rounded" onclick="$('#sidebar_layer').slideUp(400);" style="position: absolute; top: 10px;right: 10px;">
                     <i class="fa fa-times"></i> Tutup
                 </button>
-                <div class="p-3 rounded" id="layer_all" style="background-color: #fff;max-height: 450px;overflow-y: auto;">                   
+                <div class="p-3 rounded" id="layer_all" style="background-color: #fff;max-height: 450px;overflow-y: auto;">
 
                 </div>
             </div>
@@ -144,7 +144,7 @@
                 <button class="btn btn-light btn-sm btn-rounded" onclick="$('#detail_klik').slideUp(400);" style="position: absolute; top: 10px;right: 10px;">
                     <i class="fa fa-times"></i> Tutup
                 </button>
-                <div class="p-3 rounded" id="detail_html" style="background-color: #fff;height: 250px;overflow-y: auto;">
+                <div class="p-3 rounded" id="detail_html" style="background-color: #fff;height: 300px;overflow-y: auto;">
 
                 </div>
             </div>
@@ -213,7 +213,7 @@
         map = L.map(`map-id`, {
             doubleClickZoom: false,
             zoomControl: false,
-        }).setView([-7.5170231807031, 110.59661865234375], 13);
+        }).setView([-7.40306, 110.63983], 11);
 
         setInterval(function() {
             map.invalidateSize();
@@ -273,7 +273,7 @@
         // Zoom In & Out Event
         L.DomEvent.on(L.DomUtil.get('zoom-in'), 'click', (event) => map.setZoom(map.getZoom() + 1))
         L.DomEvent.on(L.DomUtil.get('zoom-out'), 'click', (event) => map.setZoom(map.getZoom() - 1));
-        L.DomEvent.on(L.DomUtil.get('center'), 'click', (event) => map.setView([-7.5170231807031, 110.59661865234375], 14));
+        L.DomEvent.on(L.DomUtil.get('center'), 'click', (event) => map.setView([-7.40306, 110.63983], 11));
         $('#layer').on('click', function(e) {
             $('#detail').hide();
             if ($('#sidebar_layer').is(':visible')) {
@@ -286,6 +286,82 @@
     </script>
 
     <script>
+        $(document).ready(function() {
+            load_peta();
+            load_batas();
+        });
+
+        var geoJson, batasKecamatan;
+
+        function load_peta() {
+            if (geoJson) map.removeLayer(geoJson);
+
+            geoJson = new L.GeoJSON.AJAX("{{ route('admin.peta.geojson') }}", {
+                onEachFeature: function(feature, layer) {
+                    layer.on({
+                        'click': function(e) {
+                            select_layer(e.target, e);
+                        }
+                    });
+                }
+            })
+
+            geoJson.on("data:loading", function() {
+                Swal.fire({
+                    title: 'Loading',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                });
+            });
+
+            geoJson.on("data:loaded", function() {
+                // map.fitBounds(geoJson.getBounds());
+                geoJson.addTo(map);
+                Swal.close();
+            });
+        }
+
+        function load_batas() {
+            if (batasKecamatan) map.removeLayer(batasKecamatan);
+
+            batasKecamatan = new L.GeoJSON.AJAX("{{ asset('peta/batas_kecamatan.geojson') }}", {
+                style: (feature) => {
+                    let color = '#c51162';
+
+                    return {
+                        fillColor: color,
+                        fillOpacity: 0,
+                        color: color,
+                        opacity: 1,
+                        weight: 2,
+                        dashArray: '4',
+                        dahsOffset: 2
+                    }
+                },
+                onEachFeature: function(feature, layer) {
+                    layer.on({
+                        'click': function(e) {
+                            select_layer(e.target, e);
+                        }
+                    });
+                }
+            })
+
+            batasKecamatan.on("data:loading", function() {
+                Swal.fire({
+                    title: 'Loading',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                });
+            });
+
+            batasKecamatan.on("data:loaded", function() {
+                // map.fitBounds(batasKecamatan.getBounds());
+                batasKecamatan.addTo(map);
+                Swal.close();
+            });
+        }
+
         function select_layer(layer, e) {
 
             var data = e.target.feature.properties;
@@ -295,19 +371,37 @@
             var data_show = '';
             var kondisi = [
                 'objectid', 'shape_length', 'stroke', 'shape_area', 'fill', 'fill_opacity', 'stroke_opacity', 'icon_name',
-                'orde 1', 'orde 2', 'orde 3', 'orde 4', 'namobj'
+                'orde 1', 'orde 2', 'orde 3', 'orde 4', 'namobj', 'kode_kecamatan', 'id', 'is_verif', 'foto',
             ];
 
             $.map(data, function(e, i) {
                 if (!kondisi.includes(i.toLowerCase())) {
                     data_show += `
                 <tr>
-                    <td>${i}</td>
+                    <td>${i.replaceAll('_',' ')}</td>
                     <td>${e}</td>
                 </tr>
                 `;
                 }
             });
+
+            var foto = '<h4 class="my-2">Foto Pohon</h4> <div class="row">';
+
+            $.map(data.foto, function(elemen, index) {
+                foto += `
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <img class="" src="{{ asset('') }}${elemen.foto}" style="object-fit: cover;width:100%;height:150px;" />
+                            </div>
+                            <div class="card-footer p-1 text-center">
+                                <small>${elemen.caption}</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            foto += '</div>';
 
             var html = `
                 <table style="width: 100%;" class="table table-hover">
@@ -315,66 +409,11 @@
                         ${data_show}
                     </tbody>
                 </table>
+                ${foto}
             `;
 
             $('#detail_html').html(html);
             $('#sidebar_layer').hide();
-        }
-
-        function load_popup(row) {
-            var tr = '';
-
-            $.map(row, function(e, i) {
-
-                if (!['id', 'lat', 'long'].includes(i)) {
-                    tr += `
-                    <tr>
-                        <td>${i.replaceAll('_',' ')}</td>
-                        <td>${e??'-'}</td>
-                    </tr>
-                `;
-                }
-            });
-
-            var html = `
-            <div style="height:200px;overflow-y:auto;">
-                <table class="table table-bordered table-sm table-striped table_target table_1">
-                    ${tr}
-                </table>
-                <table class="table table-bordered table-sm table-striped table_target table_2" style="display:none;">
-                    <tr>
-                        <td>Lat</td>
-                        <td>${row.lat}</td>
-                    </tr>
-                    <tr>
-                        <td>Long</td>
-                        <td>${row.long}</td>
-                    </tr>
-                </table>
-            </div>
-            <button onclick="set_radio(this,'table_1')" class="btn btn_pilih btn-sm btn-outline-primary active">Properti</button>
-            <button onclick="set_radio(this,'table_2')" class="btn btn_pilih btn-sm btn-outline-primary">Info</button>
-        `;
-
-            return html;
-        }
-
-        function set_radio(dt, target) {
-            $('.btn_pilih').removeClass('active');
-            $(dt).addClass('active');
-
-            $('.table_target').hide()
-            $('.' + target).show()
-
-        }
-
-        function set_radio_2(dt, target) {
-            $('.btn_select').removeClass('active');
-            $(dt).addClass('active');
-
-            $('.tampil_ganti').hide()
-            $('#' + target).show()
-
         }
     </script>
 

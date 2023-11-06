@@ -13,6 +13,7 @@
     <meta name="keywords" content="Peta persebaran">
     <!-- Robots Meta Tag -->
     <meta name="robots" content="index, follow">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <!-- favicon -->
     <link rel="shortcut icon" href="images/logo-ska.png">
@@ -32,6 +33,7 @@
     <link href="{{ asset('peta') }}/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt">
     <link href="{{ asset('peta') }}/css/default.css" rel="stylesheet" id="color-opt">
     <link href="{{ asset('peta') }}/css/custom-kab.css" rel="stylesheet" id="custom-css">
+    <link href="{{ asset('template-new') }}/lib/font-awesome/css/font-awesome.css" rel="stylesheet">
 
     <title>Peta Persebaran</title>
 
@@ -81,6 +83,10 @@
 
         .leaflet-popup-content-wrapper {
             border-radius: 5px !important;
+        }
+
+        .swal2-title {
+            font-size: 20px !important;
         }
     </style>
 </head>
@@ -135,7 +141,26 @@
                     <i class="fa fa-times"></i> Tutup
                 </button>
                 <div class="p-3 rounded" id="layer_all" style="background-color: #fff;max-height: 450px;overflow-y: auto;">
-
+                    <button onclick="hitung_jarak();" class="btn btn-link p-0">Tampilkan Jarak Dengan Lokasi Sekarang ?</button>
+                    <div id="target_jarak">
+                        <table>
+                            @foreach ($pohon as $item)
+                                <tr>
+                                    <td>
+                                        <strong>{{ $item->nama_indo }}</strong> ( <i>{{ $item->nama_latin }}</i> )
+                                    </td>
+                                    <td>
+                                        <button title="lokasi pohon" class="btn btn-primary btn-sm" onclick="detail_layer({{ $item->latitude }},{{ $item->longitude }})">
+                                            <i class="fa fa-map"></i>
+                                        </button>
+                                        <button title="penunjuk arah" class="btn btn-success btn-sm" onclick="window.open('https://www.google.com/maps/dir/?api=1&amp;destination={{ $item->latitude }},{{ $item->longitude }}')">
+                                            <i class="fa fa-location"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -286,6 +311,12 @@
     </script>
 
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+        });
+
         $(document).ready(function() {
             load_peta();
             load_batas();
@@ -414,6 +445,126 @@
 
             $('#detail_html').html(html);
             $('#sidebar_layer').hide();
+        }
+
+        function detail_layer(lat, long) {
+            map.flyTo([lat, long], 18);
+        }
+
+        function hitung_jarak() {
+            if (navigator.geolocation) {
+
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var long = position.coords.longitude;
+
+                    Swal.fire({
+                        title: 'Aplikasi akan menghitung jarak pohon dengan lokasi anda sekarang ?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.value) {
+
+                            $.ajax({
+                                type: "POST",
+                                url: "{{ route('admin.peta.jarak') }}",
+                                data: {
+                                    lat: lat,
+                                    long: long,
+                                },
+                                dataType: "JSON",
+                                beforeSend: function(res) {
+                                    beforeLoading(res);
+                                },
+                                error: function(res) {
+                                    errorLoading(res);
+                                },
+                                success: function(res) {
+                                    Swal.close();
+                                    var html = '';
+
+                                    $.map(res.data, function(e, i) {
+                                        html += `
+                                            <tr>
+                                                <td>
+                                                    <strong>${e.nama_indo}</strong> ( <i>${e.nama_latin}</i> )
+                                                    <small class="d-block">estimasi jarak ${formatRupiah(parseInt(e.jarak_meter)+'')}m</small>
+                                                </td>
+                                                <td>
+                                                    <button title="lokasi pohon" class="btn btn-primary btn-sm" onclick="detail_layer(${e.latitude},${e.longitude})">
+                                                        <i class="fa fa-map"></i>
+                                                    </button>
+                                                    <button title="penunjuk arah" class="btn btn-success btn-sm" onclick="window.open('https://www.google.com/maps/dir/?api=1&amp;destination=${e.latitude},${e.longitude}')">
+                                                        <i class="fa fa-location"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        `;
+                                    });
+
+                                    $('#target_jarak').html(`
+                                        <table>
+                                            ${html}
+                                        </table>
+                                    `);
+                                }
+                            });
+                        }
+                    })
+
+                });
+            } else {
+                Swal.fire({
+                    title: 'Maaf',
+                    text: "Browser tidak mendukung GeoLocation",
+                    icon: 'error',
+                    showConfirmButton: false
+                })
+            }
+        }
+    </script>
+
+    <script>
+        function formatRupiah(angka) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return rupiah;
+        }
+
+        function beforeLoading(res) {
+            Swal.fire({
+                title: 'Loading ...',
+                html: '<i style="font-size:50px;" class="fa fa-spinner fa-spin"></i>',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+            });
+        }
+
+        function errorLoading(res) {
+            if (res.responseJSON.msg) {
+                var text = res.responseJSON.msg;
+            } else {
+                var text = res.responseJSON.message;
+            }
+            Swal.fire({
+                icon: 'warning',
+                title: 'Gagal',
+                text: text,
+                showConfirmButton: true,
+            })
         }
     </script>
 

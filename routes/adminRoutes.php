@@ -34,6 +34,7 @@ Route::prefix('admin')->middleware(['auth', 'cekRole:1'])->group(function () {
     Route::prefix('peta')->group(function () {
         Route::get('/', [PetaController::class, 'index'])->name('admin.peta');
         Route::get('/geojson', [PetaController::class, 'geojson'])->name('admin.peta.geojson');
+        Route::post('/jarak', [PetaController::class, 'jarak'])->name('admin.peta.jarak');
     });
 
     Route::prefix('pohon-foto')->group(function () {

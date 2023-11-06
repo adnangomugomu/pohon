@@ -97,8 +97,8 @@
                                                     </div>
                                                     <button type="submit" class="btn btn-primary glow position-relative w-100">LOGIN<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
                                                 </form>
-                                                {{-- <hr> --}}
-                                                {{-- <div class="text-center"><small class="mr-25">Belum punya akun?</small><a href="#"><small>Daftar disini</small> </a></div> --}}
+                                                <hr>
+                                                <div class="text-center"><small class="mr-25">Kembali </small><a href="{{ route('home') }}"><small>Halaman Beranda</small> </a></div>
                                             </div>
                                         </div>
                                     </div>

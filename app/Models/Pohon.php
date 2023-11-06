@@ -45,4 +45,17 @@ class Pohon extends Model
     {
         return $this->hasMany(Pohon_foto::class, 'pohon_id', 'id');
     }
+
+    public function scopeWithJarak(EloquentBuilder $query, $latitude, $longitude)
+    {
+        $query->select(
+            'latitude',
+            'longitude',
+            'nama_indo',
+            'nama_latin',
+            DB::raw('ST_Distance_Sphere(POINT(?, ?), koordinat) AS jarak_meter')
+        )
+            ->addBinding([$longitude, $latitude], 'select')
+            ->orderBy('jarak_meter', 'asc');
+    }
 }

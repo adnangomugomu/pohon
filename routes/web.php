@@ -1,11 +1,17 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ProfilController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [AuthController::class, 'index'])->name('login')->middleware('guest');
+Route::get('/', [FrontendController::class, 'index'])->name('home');
 
+Route::get('data-pohon', [FrontendController::class, 'dataPohon'])->name('front.pohon');
+Route::get('data-pohon/{id}', [FrontendController::class, 'detailPohon'])->name('front.pohon.detail');
+Route::get('aduan-masyarakat', [FrontendController::class, 'aduan'])->name('front.aduan');
+
+Route::get('/login', [AuthController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [AuthController::class, 'store'])->name('login.store')->middleware(['throttle:login', 'guest']);
 Route::get('/logout', [AuthController::class, 'destroy'])->name('login.logout')->middleware('auth');
 

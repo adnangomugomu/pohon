@@ -10,12 +10,13 @@ class PetaController extends Controller
     public function index()
     {
         $data['title'] = "Peta Persebaran Data Pohon";
+        $data['pohon'] = Pohon::all();
         return view('admin.peta.index', $data);
     }
 
     public function geoJson()
     {
-        $data = Pohon::with(['jenis', 'kecamatan', 'kelurahan','foto'])->get();
+        $data = Pohon::with(['jenis', 'kecamatan', 'kelurahan', 'foto'])->get();
 
         $geoJSON = [
             'type' => 'FeatureCollection',
@@ -56,5 +57,18 @@ class PetaController extends Controller
         }
 
         return json_encode($geoJSON);
+    }
+
+    public function jarak(Request $request)
+    {
+        $latitude = $request->lat;
+        $longitude = $request->long;
+
+        $data = Pohon::withJarak($latitude, $longitude)->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $data,
+        ], 200);
     }
 }

@@ -187,7 +187,7 @@
                         <h3 class="whitecolor bottom25">Jam Kerja</h3>
                         <p class="whitecolor bottom25">Kami melayani 5 hari dalam satu pekan</p>
                         <ul class="hours_links whitecolor">
-                            <li><span>Senin-Jumat:</span> <span>08.00-16.00</span></li>
+                            <li><span>Senin-Jumat:</span> <span>08:00-16:00</span></li>
                         </ul>
                     </div>
                 </div>

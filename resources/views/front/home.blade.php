@@ -106,7 +106,7 @@
             </div>
             <div class="row mt-4">
                 <div class="col-sm-12 text-center">
-                    <a class="button btn-yellow" href="{{ route('front.pohon') }}">Selengkapnya</a>
+                    <a class="button btn-blue" href="{{ route('front.pohon') }}">Selengkapnya</a>
                 </div>
             </div>
         </div>

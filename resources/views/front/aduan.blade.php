@@ -178,7 +178,7 @@
                         <div class="item mt-3">
                             <div class="team-box wow fadeInUp" data-wow-delay="150ms">
                                 <div class="team-content text-left" style="height: auto !important;">
-                                    <h4 class="darkcolor">{{ substr_replace($item->nama, 'xxx', 0, 4) }}</h4>
+                                    <h4 class="darkcolor">{{ substr_replace(substr_replace($item->nama, '....', -4), '....', 0, 4) }}</h4>
                                     <p>
                                         {{ $item->deskripsi }}
                                     </p>
@@ -187,8 +187,8 @@
                                         <i class="fa fa-calendar-alt"></i> {{ date('d F Y', strtotime($item->created_at)) }}
                                         <i class="fa fa-check"></i> {{ $item->status->nama }}
                                         <br>
-                                        <i class="fa fa-envelope"></i> {{ substr_replace($item->email, 'xxx', 0, 4) }}
-                                        <i class="fa fa-mobile-alt"></i> {{ substr_replace($item->no_hp, 'xxx', -4) }}
+                                        <i class="fa fa-envelope"></i> {{ substr_replace($item->email, '....', 0, 4) }}
+                                        <i class="fa fa-mobile-alt"></i> {{ substr_replace($item->no_hp, '....', -4) }}
                                     </div>
                                 </div>
                             </div>

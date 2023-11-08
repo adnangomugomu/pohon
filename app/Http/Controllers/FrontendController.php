@@ -44,7 +44,7 @@ class FrontendController extends Controller
         DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [
-                'nama' => 'required|min:5',
+                'nama' => 'required|min:8',
                 'email' => 'required|min:5|email:rfc,dns',
                 'no_hp' => 'required|min:5|numeric',
                 'deskripsi' => 'required|min:5',

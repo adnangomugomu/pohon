@@ -35,7 +35,7 @@ class FrontendController extends Controller
     public function Aduan()
     {
         $data['title'] = 'Data Pohon';
-        $data['laporan'] = Laporan::with(['status'])->where('jenis', 'masyarakat')->orderBy('id','desc')->paginate(9);
+        $data['laporan'] = Laporan::with(['status'])->orderBy('id','desc')->paginate(9);
         return view('front.aduan', $data);
     }
 

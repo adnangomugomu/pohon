@@ -18,9 +18,10 @@ class DashboardController extends Controller
             'breadcrumb' => ['Dashboard', 'index']
         ];
 
-        $data['total_user'] = User::count();
-        $data['total_pohon'] = Pohon::count();
-        $data['total_laporan'] = Laporan::count();
+        $data['total_laporan'] = Laporan::selectRaw("COUNT(case when status_id='1' then 1 end) as belum")
+        ->selectRaw("COUNT(case when status_id='2' then 1 end) as sedang")
+        ->selectRaw("COUNT(case when status_id='3' then 1 end) as sudah")
+        ->first();
 
         $data['bulan'] = [
             'Januari' => 1,

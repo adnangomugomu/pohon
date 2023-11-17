@@ -4,7 +4,6 @@
 
 @section('header', $header)
 @section('tombol')
-    <a class="btn btn-success mr-2" target="_blank" href="{{ route('admin.laporan_internal.excel') }}"><i class="fa fa-print"></i> Cetak Excel</a>
     <button class="btn btn-primary" onclick="tambahData();"><i class="fa fa-plus"></i> Tambah Data</button>
 @endsection
 @section('konten')
@@ -18,12 +17,7 @@
                                 <thead class="thead-colored thead-primary">
                                     <tr>
                                         <th class="text-white" style="width: 30px;">NO</th>
-                                        <th class="text-white">JENIS ADUAN</th>
                                         <th class="text-white">NAMA</th>
-                                        <th class="text-white">NOMER HP</th>
-                                        <th class="text-white">DESKRIPSI LAPORAN</th>
-                                        <th class="text-white">STATUS</th>
-                                        <th class="text-white">TANGGAL LAPORAN</th>
                                         <th class="text-white" style="width: 50px;">AKSI</th>
                                     </tr>
                                 </thead>
@@ -38,12 +32,6 @@
 @endsection
 
 @section('script')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.2.0/Control.FullScreen.css" integrity="sha512-OyIJmh4XggYsUxdlYua68RMPbPo/5b63LHzoLETEVwubMGcJp9IrbmxxydRZw41FiOKAK0M60eOiqkRq59OwpA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.2.0/Control.FullScreen.min.js" integrity="sha512-10PRJppn1d6/3lrfc+7e4S+0mfdNFLlv3QmDpwISpVsrPdkSccy/T22neLEWc5cmL6biDscH3WwrhHam9vMOIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <script>
         $(document).ready(function() {
             load_table();
@@ -66,7 +54,7 @@
                     [10, 25, 50, 100, "All"]
                 ],
                 ajax: {
-                    url: '{{ route('admin.laporan_internal.getTable') }}',
+                    url: '{{ route('admin.ref_kondisi.getTable') }}',
                     type: 'GET',
                     dataType: 'JSON',
                 },
@@ -75,28 +63,8 @@
                         name: 'DT_RowIndex',
                     },
                     {
-                        data: 'aduan.nama',
-                        name: 'aduan.nama'
-                    },
-                    {
                         data: 'nama',
                         name: 'nama'
-                    },
-                    {
-                        data: 'no_hp',
-                        name: 'no_hp'
-                    },                
-                    {
-                        data: 'deskripsi',
-                        name: 'deskripsi'
-                    },
-                    {
-                        data: 'status',
-                        name: 'status'
-                    },
-                    {
-                        data: 'tgl_laporan',
-                        name: 'tgl_laporan'
                     },
                     {
                         data: 'action',
@@ -119,7 +87,7 @@
         function tambahData() {
             $.ajax({
                 type: "GET",
-                url: "{{ route('admin.laporan_internal.create') }}",
+                url: "{{ route('admin.ref_kondisi.create') }}",
                 dataType: "JSON",
                 data: {},
                 beforeSend: function(res) {
@@ -131,7 +99,7 @@
                 success: function(res) {
                     Swal.close();
                     show_modal_custom({
-                        judul: 'Tambah Laporan',
+                        judul: 'Tambah Kondisi Pohon',
                         html: res.html,
                         size: 'modal-lg',
                     });
@@ -142,7 +110,7 @@
         function editData(id) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('admin.laporan_internal.edit', '') }}/" + id,
+                url: "{{ route('admin.ref_kondisi.edit', '') }}/" + id,
                 dataType: "JSON",
                 data: {},
                 beforeSend: function(res) {
@@ -154,7 +122,7 @@
                 success: function(res) {
                     Swal.close();
                     show_modal_custom({
-                        judul: 'Edit Laporan',
+                        judul: 'Edit Data Jenis Pohon',
                         html: res.html,
                         size: 'modal-lg',
                     });
@@ -165,7 +133,7 @@
         function detailData(id) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('admin.laporan_internal.detail', '') }}/" + id,
+                url: "{{ route('admin.ref_kondisi.detail', '') }}/" + id,
                 dataType: "JSON",
                 data: {},
                 beforeSend: function(res) {
@@ -177,7 +145,7 @@
                 success: function(res) {
                     Swal.close();
                     show_modal_custom({
-                        judul: 'Detail Laporan',
+                        judul: 'Detail',
                         html: res.html,
                         size: 'modal-lg',
                     });
@@ -187,7 +155,7 @@
 
         function hapusData(id) {
             Swal.fire({
-                title: 'Hapus Laporan ?',
+                title: 'Hapus Data Kondisi Pohon ?',
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Ya',
@@ -197,7 +165,7 @@
                 if (result.value) {
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ route('admin.laporan_internal.delete', '') }}/" + id,
+                        url: "{{ route('admin.ref_kondisi.delete', '') }}/" + id,
                         dataType: "JSON",
                         beforeSend: function(res) {
                             beforeLoading(res);
@@ -209,54 +177,6 @@
                             Swal.fire({
                                     icon: 'success',
                                     title: 'Berhasil dihapus',
-                                    showConfirmButton: true,
-                                })
-                                .then(() => {
-                                    $('#modal_custom').modal('hide');
-                                    $('#table-data').DataTable().ajax.reload();
-                                });
-                        }
-                    });
-                }
-            })
-        }
-
-        function verif(jenis, id) {
-            if (jenis == 'proses') {
-                var text = "Proses Laporan ?";
-            } else if (jenis == 'selesai') {
-                var text = "Laporan Sudah Ditangani ?";
-            }
-
-            Swal.fire({
-                title: text,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Ya',
-                cancelButtonText: 'Batal',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.value) {
-                    $.ajax({
-                        type: "POST",
-                        headers: {
-                            'X-HTTP-Method-Override': 'PUT'
-                        },
-                        url: "{{ route('admin.laporan_internal.verif', '') }}/" + id,
-                        dataType: "JSON",
-                        data: {
-                            jenis: jenis,
-                        },
-                        beforeSend: function(res) {
-                            beforeLoading(res);
-                        },
-                        error: function(res) {
-                            errorLoading(res);
-                        },
-                        success: function(res) {
-                            Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil disimpan',
                                     showConfirmButton: true,
                                 })
                                 .then(() => {

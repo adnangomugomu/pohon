@@ -26,6 +26,21 @@ class Pohon extends Model
         });
     }
 
+    public function tajuk()
+    {
+        return $this->belongsTo(Ref_tajuk::class, 'tajuk_id', 'id');
+    }
+
+    public function kondisi()
+    {
+        return $this->belongsTo(Ref_kondisi::class, 'kondisi_id', 'id');
+    }
+
+    public function akar()
+    {
+        return $this->belongsTo(Ref_akar::class, 'akar_id', 'id');
+    }
+
     public function jenis()
     {
         return $this->belongsTo(Ref_jenis::class, 'jenis_id', 'id');

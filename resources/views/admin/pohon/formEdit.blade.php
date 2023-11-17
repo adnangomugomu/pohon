@@ -120,13 +120,23 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Akar Pohon <small class="text-danger">*</small></label>
-                            <input type="text" value="{{ $row->akar }}" name="akar" class="form-control" placeholder="masukkan isian" required>
+                            <select name="akar_id" class="form-control form_select" data-placeholder="pilih akar" required>
+                                <option value=""></option>
+                                @foreach ($akar as $item)
+                                    <option {{ $item->id == $row->akar_id ? 'selected' : '' }} value="{{ $item->id }}">{{ $item->nama }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Kondisi Pohon <small class="text-danger">*</small></label>
-                            <input type="text" value="{{ $row->kondisi }}" name="kondisi" class="form-control" placeholder="masukkan isian" required>
+                            <select name="kondisi_id" class="form-control form_select" data-placeholder="pilih kondisi" required>
+                                <option value=""></option>
+                                @foreach ($kondisi as $item)
+                                    <option {{ $item->id == $row->kondisi_id ? 'selected' : '' }} value="{{ $item->id }}">{{ $item->nama }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -146,12 +156,6 @@
 @endsection
 
 @section('script')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.2.0/Control.FullScreen.css" integrity="sha512-OyIJmh4XggYsUxdlYua68RMPbPo/5b63LHzoLETEVwubMGcJp9IrbmxxydRZw41FiOKAK0M60eOiqkRq59OwpA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.2.0/Control.FullScreen.min.js" integrity="sha512-10PRJppn1d6/3lrfc+7e4S+0mfdNFLlv3QmDpwISpVsrPdkSccy/T22neLEWc5cmL6biDscH3WwrhHam9vMOIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <script>
         $(document).ready(function() {
             $('.form_select').select2({

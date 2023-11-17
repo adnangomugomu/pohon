@@ -17,9 +17,9 @@
                                 <thead class="thead-colored thead-primary">
                                     <tr>
                                         <th class="text-white" style="width: 30px;">NO</th>
+                                        <th class="text-white">JENIS ADUAN</th>
                                         <th class="text-white">NAMA</th>
                                         <th class="text-white">NOMER HP</th>
-                                        <th class="text-white">EMAIL</th>
                                         <th class="text-white">DESKRIPSI LAPORAN</th>
                                         <th class="text-white">STATUS</th>
                                         <th class="text-white">TANGGAL LAPORAN</th>
@@ -37,6 +37,12 @@
 @endsection
 
 @section('script')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.2.0/Control.FullScreen.css" integrity="sha512-OyIJmh4XggYsUxdlYua68RMPbPo/5b63LHzoLETEVwubMGcJp9IrbmxxydRZw41FiOKAK0M60eOiqkRq59OwpA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.2.0/Control.FullScreen.min.js" integrity="sha512-10PRJppn1d6/3lrfc+7e4S+0mfdNFLlv3QmDpwISpVsrPdkSccy/T22neLEWc5cmL6biDscH3WwrhHam9vMOIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script>
         $(document).ready(function() {
             load_table();
@@ -68,16 +74,16 @@
                         name: 'DT_RowIndex',
                     },
                     {
+                        data: 'aduan.nama',
+                        name: 'aduan.nama'
+                    },
+                    {
                         data: 'nama',
                         name: 'nama'
                     },
                     {
                         data: 'no_hp',
                         name: 'no_hp'
-                    },
-                    {
-                        data: 'email',
-                        name: 'email'
                     },
                     {
                         data: 'deskripsi',

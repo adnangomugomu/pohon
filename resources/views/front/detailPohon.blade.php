@@ -110,7 +110,7 @@
                         
                             <div class="d-flex justify-content-between">
                                 <h4 class="font-bold">Lokasi Pohon</h4>
-                                <button class="btn btn-link" onclick="window.open('https://www.google.com/maps/dir/?api=1&amp;destination={{ $row->latitude }},{{ $row->longitude }}')">Penjunjuk Arah</button>
+                                <button class="btn btn-link" onclick="window.open('https://www.google.com/maps/dir/?api=1&amp;destination={{ $row->latitude }},{{ $row->longitude }}')">Penunjuk Arah</button>
                             </div>
                             <div id="map" class="rounded border border-secondary"></div>
 

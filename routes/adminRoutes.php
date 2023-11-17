@@ -5,7 +5,11 @@ use App\Http\Controllers\admin\FotoPohonController;
 use App\Http\Controllers\admin\LaporanInternalController;
 use App\Http\Controllers\admin\LaporanMasyarakatController;
 use App\Http\Controllers\admin\PohonController;
+use App\Http\Controllers\admin\RefAduanController;
+use App\Http\Controllers\admin\RefAkarController;
 use App\Http\Controllers\admin\RefJenisController;
+use App\Http\Controllers\admin\RefKondisiController;
+use App\Http\Controllers\admin\RefTajukController;
 use App\Http\Controllers\admin\RegistrasiController;
 use App\Http\Controllers\admin\RoleController;
 use App\Http\Controllers\PetaController;
@@ -54,6 +58,50 @@ Route::prefix('admin')->middleware(['auth', 'cekRole:1'])->group(function () {
         Route::post('/', [RefJenisController::class, 'store'])->name('admin.ref_jenis.store');
         Route::put('/{id}', [RefJenisController::class, 'update'])->name('admin.ref_jenis.update');
         Route::delete('/{id}', [RefJenisController::class, 'destroy'])->name('admin.ref_jenis.delete');
+    });
+
+    Route::prefix('referensi-akar-pohon')->group(function () {
+        Route::get('/get-table', [RefAkarController::class, 'getDataTable'])->name('admin.ref_akar.getTable');
+        Route::get('/', [RefAkarController::class, 'index'])->name('admin.ref_akar');
+        Route::get('/create', [RefAkarController::class, 'create'])->name('admin.ref_akar.create');
+        Route::get('/detail/{id}', [RefAkarController::class, 'show'])->name('admin.ref_akar.detail');
+        Route::get('/edit/{id}', [RefAkarController::class, 'edit'])->name('admin.ref_akar.edit');
+        Route::post('/', [RefAkarController::class, 'store'])->name('admin.ref_akar.store');
+        Route::put('/{id}', [RefAkarController::class, 'update'])->name('admin.ref_akar.update');
+        Route::delete('/{id}', [RefAkarController::class, 'destroy'])->name('admin.ref_akar.delete');
+    });
+
+    Route::prefix('referensi-kondisi-pohon')->group(function () {
+        Route::get('/get-table', [RefKondisiController::class, 'getDataTable'])->name('admin.ref_kondisi.getTable');
+        Route::get('/', [RefKondisiController::class, 'index'])->name('admin.ref_kondisi');
+        Route::get('/create', [RefKondisiController::class, 'create'])->name('admin.ref_kondisi.create');
+        Route::get('/detail/{id}', [RefKondisiController::class, 'show'])->name('admin.ref_kondisi.detail');
+        Route::get('/edit/{id}', [RefKondisiController::class, 'edit'])->name('admin.ref_kondisi.edit');
+        Route::post('/', [RefKondisiController::class, 'store'])->name('admin.ref_kondisi.store');
+        Route::put('/{id}', [RefKondisiController::class, 'update'])->name('admin.ref_kondisi.update');
+        Route::delete('/{id}', [RefKondisiController::class, 'destroy'])->name('admin.ref_kondisi.delete');
+    });
+
+    Route::prefix('referensi-jenis-aduan')->group(function () {
+        Route::get('/get-table', [RefAduanController::class, 'getDataTable'])->name('admin.ref_aduan.getTable');
+        Route::get('/', [RefAduanController::class, 'index'])->name('admin.ref_aduan');
+        Route::get('/create', [RefAduanController::class, 'create'])->name('admin.ref_aduan.create');
+        Route::get('/detail/{id}', [RefAduanController::class, 'show'])->name('admin.ref_aduan.detail');
+        Route::get('/edit/{id}', [RefAduanController::class, 'edit'])->name('admin.ref_aduan.edit');
+        Route::post('/', [RefAduanController::class, 'store'])->name('admin.ref_aduan.store');
+        Route::put('/{id}', [RefAduanController::class, 'update'])->name('admin.ref_aduan.update');
+        Route::delete('/{id}', [RefAduanController::class, 'destroy'])->name('admin.ref_aduan.delete');
+    });
+
+    Route::prefix('referensi-tajuk')->group(function () {
+        Route::get('/get-table', [RefTajukController::class, 'getDataTable'])->name('admin.ref_tajuk.getTable');
+        Route::get('/', [RefTajukController::class, 'index'])->name('admin.ref_tajuk');
+        Route::get('/create', [RefTajukController::class, 'create'])->name('admin.ref_tajuk.create');
+        Route::get('/detail/{id}', [RefTajukController::class, 'show'])->name('admin.ref_tajuk.detail');
+        Route::get('/edit/{id}', [RefTajukController::class, 'edit'])->name('admin.ref_tajuk.edit');
+        Route::post('/', [RefTajukController::class, 'store'])->name('admin.ref_tajuk.store');
+        Route::put('/{id}', [RefTajukController::class, 'update'])->name('admin.ref_tajuk.update');
+        Route::delete('/{id}', [RefTajukController::class, 'destroy'])->name('admin.ref_tajuk.delete');
     });
 
     Route::prefix('laporan-internal')->group(function () {

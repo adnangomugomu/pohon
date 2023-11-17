@@ -33,10 +33,34 @@
         </ul>
 
         <label class="sidebar-label pd-x-15 mg-t-20">Referensi</label>
+        <a href="{{ route('admin.ref_aduan') }}" class="br-menu-link {{ Request::routeIs('admin.ref_aduan') ? 'active' : '' }}">
+            <div class="br-menu-item">
+                <i class="menu-item-icon icon ion-clipboard tx-22"></i>
+                <span class="menu-item-label">Jenis Aduan</span>
+            </div>
+        </a>
         <a href="{{ route('admin.ref_jenis') }}" class="br-menu-link {{ Request::routeIs('admin.ref_jenis') ? 'active' : '' }}">
             <div class="br-menu-item">
                 <i class="menu-item-icon icon ion-clipboard tx-22"></i>
                 <span class="menu-item-label">Jenis Pohon</span>
+            </div>
+        </a>
+        <a href="{{ route('admin.ref_akar') }}" class="br-menu-link {{ Request::routeIs('admin.ref_akar') ? 'active' : '' }}">
+            <div class="br-menu-item">
+                <i class="menu-item-icon icon ion-clipboard tx-22"></i>
+                <span class="menu-item-label">Akar Pohon</span>
+            </div>
+        </a>
+        <a href="{{ route('admin.ref_kondisi') }}" class="br-menu-link {{ Request::routeIs('admin.ref_kondisi') ? 'active' : '' }}">
+            <div class="br-menu-item">
+                <i class="menu-item-icon icon ion-clipboard tx-22"></i>
+                <span class="menu-item-label">Kondisi Pohon</span>
+            </div>
+        </a>
+        <a href="{{ route('admin.ref_tajuk') }}" class="br-menu-link {{ Request::routeIs('admin.ref_tajuk') ? 'active' : '' }}">
+            <div class="br-menu-item">
+                <i class="menu-item-icon icon ion-clipboard tx-22"></i>
+                <span class="menu-item-label">Tajuk</span>
             </div>
         </a>
 

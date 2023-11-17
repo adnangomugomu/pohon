@@ -15,6 +15,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             RefJenisSeeder::class,
             StatusSeeder::class,
+            RefAkarSeeder::class,
+            RefKondisiSeeder::class,
+            RefTajukSeeder::class,
+            RefAduanSeeder::class,
         ]);
     }
 }

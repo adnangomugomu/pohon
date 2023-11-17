@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Laporan;
 use App\Models\Pohon;
+use App\Models\Ref_aduan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -34,8 +35,9 @@ class FrontendController extends Controller
 
     public function Aduan()
     {
-        $data['title'] = 'Data Pohon';
-        $data['laporan'] = Laporan::with(['status'])->orderBy('id','desc')->paginate(9);
+        $data['title'] = 'Aduan Masyarakat';
+        $data['laporan'] = Laporan::with(['status'])->orderBy('id', 'desc')->paginate(9);
+        $data['aduan'] = Ref_aduan::all();
         return view('front.aduan', $data);
     }
 
@@ -48,6 +50,12 @@ class FrontendController extends Controller
                 'email' => 'required|min:5|email:rfc,dns',
                 'no_hp' => 'required|min:5|numeric',
                 'deskripsi' => 'required|min:5',
+                'aduan_id' => 'required|exists:ref_aduan,id',
+                'latitude' => 'required',
+                'longitude' => 'required',
+                'foto' => 'required|image|mimes:jpg,jpeg,png,webp,gif|max:5048',
+            ], [
+                'foto.max' => 'Ukuran :attribute maksimal 5048 Kb',
             ]);
 
             if ($validator->fails()) {
@@ -63,6 +71,20 @@ class FrontendController extends Controller
                 $data->deskripsi = $request->deskripsi;
                 $data->jenis = 'masyarakat';
                 $data->status_id = 1;
+
+                $data->aduan_id = $request->aduan_id;
+                $data->latitude = $request->latitude;
+                $data->longitude = $request->longitude;
+                $data->koordinat = DB::raw("(ST_GeomFromText('POINT($request->longitude $request->latitude)'))");
+
+                if ($request->hasFile('foto')) {
+                    $photo = $request->file('foto');
+
+                    $filename = time() . '-' . mt_rand(1, 100000) . '.' . $photo->getClientOriginalExtension();
+                    $pathSave = $photo->storeAs('public/foto-laporan', $filename);
+                    $data->foto = 'storage/foto-laporan/' . $filename;
+                }
+
                 $data->save();
                 DB::commit();
 
@@ -77,6 +99,7 @@ class FrontendController extends Controller
             return response()->json([
                 'status' => 'failed',
                 'msg' => 'Terjadi kesalahan',
+                'e'=>$e,
             ], 500);
         }
     }

@@ -61,15 +61,52 @@
                     </tr>
                     <tr>
                         <td>Akar Pohon</td>
-                        <td>{{ $row->akar }}</td>
+                        <td>{{ $row->akar->nama }}</td>
                     </tr>
                     <tr>
                         <td>Kondisi</td>
-                        <td>{{ $row->kondisi }}</td>
+                        <td>{{ $row->kondisi->nama }}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <tr>
+                        <td>Tajuk</td>
+                        <td>{{ $row->tajuk->nama }}</td>
+                    </tr>
+                    <tr>
+                        <td>Utara (m)</td>
+                        <td>{{ rupiah($row->utara, true) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Timur (m)</td>
+                        <td>{{ rupiah($row->timur, true) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Selatan (m)</td>
+                        <td>{{ rupiah($row->selatan, true) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Barat (m)</td>
+                        <td>{{ rupiah($row->barat, true) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-12 text-center">
+        <h3>Foto Pohon</h3>
+        <hr>
+        @foreach ($row->foto as $dt)
+            <img src="{{ asset($dt->foto) }}" alt="foto" title="{{ $dt->caption }}" class="img-fluid m-1 rounded" style="width: 200px;height: 150px;object-fit: cover;">
+        @endforeach
     </div>
 </div>
 

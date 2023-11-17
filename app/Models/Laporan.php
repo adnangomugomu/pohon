@@ -11,6 +11,11 @@ class Laporan extends Model
     use SoftDeletes;
     protected $table = 'laporan';  
 
+    public function aduan()
+    {
+        return $this->belongsTo(Ref_aduan::class, 'aduan_id', 'id');
+    }
+
     public function status()
     {
         return $this->belongsTo(Ref_status::class, 'status_id', 'id');

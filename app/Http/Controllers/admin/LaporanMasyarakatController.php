@@ -105,7 +105,7 @@ class LaporanMasyarakatController extends Controller
         $spreadsheet = new Spreadsheet();
 
         $sheet = $spreadsheet->createSheet(0);
-        $sheet->setTitle('LAPORAN MASYARAKAT');
+        $sheet->setTitle('LAPORAN INTERNAL');
         $sheet->setCellValue('A1', 'REKAP LAPORAN MASYARAKAT');
 
         // judul
@@ -116,10 +116,12 @@ class LaporanMasyarakatController extends Controller
         $sheet->setCellValue('E3', 'DESKRIPSI');
         $sheet->setCellValue('F3', 'STATUS');
         $sheet->setCellValue('G3', 'TANGGAL LAPORAN');
+        $sheet->setCellValue('H3', 'JENIS ADUAN');
+        $sheet->setCellValue('I3', 'LAMPIRAN');
         // end judul
-        $sheet->getStyle('A3:G3')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+        $sheet->getStyle('A3:I3')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
-        $sheet->getStyle('A3:G3')->applyFromArray([
+        $sheet->getStyle('A3:I3')->applyFromArray([
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
                 'startColor' => [
@@ -128,14 +130,14 @@ class LaporanMasyarakatController extends Controller
             ],
         ]);
 
-        $sheet->getStyle('A3:G3')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A3:H3')->getAlignment()->setHorizontal('center');
 
-        foreach (['B', 'C', 'D', 'E', 'F', 'G'] as $column) $sheet->getColumnDimension($column)->setAutoSize(true);
+        foreach (['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'] as $column) $sheet->getColumnDimension($column)->setAutoSize(true);
 
         $awal = 4;
         $no = 1;
 
-        $data = Laporan::with(['status'])->where('jenis', 'masyarakat')->get();
+        $data = Laporan::with(['status', 'aduan'])->where('jenis', 'masyarakat')->get();
 
         foreach ($data as $row) {
             $sheet
@@ -145,13 +147,16 @@ class LaporanMasyarakatController extends Controller
                 ->setCellValue('D' . $awal, $row->email)
                 ->setCellValue('E' . $awal, $row->deskripsi)
                 ->setCellValue('F' . $awal, $row->status->nama)
-                ->setCellValue('G' . $awal, $row->created_at);
-            $sheet->getStyle('A' . $awal . ':G' . $awal)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+                ->setCellValue('G' . $awal, $row->created_at)
+                ->setCellValue('H' . $awal, $row->aduan->nama)
+            ->setCellValue('I' . $awal, "Buka Lampiran");
+            $sheet->getCell('I' . $awal)->getHyperlink()->setUrl(asset($row->foto))->setTooltip('Buka Lampiran');;
+            $sheet->getStyle('A' . $awal . ':I' . $awal)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
             $awal++;
         }
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Laporan Masyarakat.xlsx"');
+        header('Content-Disposition: attachment;filename="Laporan Internal.xlsx"');
         header('Cache-Control: max-age=0');
         header('Cache-Control: max-age=1');
 
@@ -167,7 +172,7 @@ class LaporanMasyarakatController extends Controller
 
     public function getDataTable(Request $request)
     {
-        $data = Laporan::with('status')->where('jenis', 'masyarakat')->get();
+        $data = Laporan::with(['status', 'aduan'])->where('jenis', 'masyarakat')->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('status', function ($dt) {

@@ -3,29 +3,29 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Ref_jenis;
+use App\Models\Ref_akar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
-class RefJenisController extends Controller
+class RefAkarController extends Controller
 {
     public function index()
     {
         $data = [
-            'title' => 'Referensi Jenis Pohon',
-            'header' => 'Referensi Jenis Pohon',
-            'breadcrumb' => ['Referensi', 'Jenis Pohon', 'index']
+            'title' => 'Referensi Akar Pohon',
+            'header' => 'Referensi Akar Pohon',
+            'breadcrumb' => ['Referensi', 'Akar Pohon', 'index']
         ];
-        return view('admin.ref_jenis.index', $data);
+        return view('admin.akar.index', $data);
     }
 
     public function create()
     {
         $data = [];
-        $html = view('admin.ref_jenis.form', $data)->render();
+        $html = view('admin.akar.form', $data)->render();
 
         return response()->json([
             'status' => 'success',
@@ -47,7 +47,7 @@ class RefJenisController extends Controller
                     'msg' => $validator->getMessageBag()->all(),
                 ], 400);
             } else {
-                $data = new Ref_jenis();
+                $data = new Ref_akar();
                 $data->nama = $request->nama;
                 $data->save();
                 DB::commit();
@@ -69,10 +69,10 @@ class RefJenisController extends Controller
 
     public function show($id)
     {
-        $row = Ref_jenis::findOrFail($id);
+        $row = Ref_akar::findOrFail($id);
         if ($row) {
             $data['row'] = $row;
-            $html = view('admin.ref_jenis.detail', $data)->render();
+            $html = view('admin.akar.detail', $data)->render();
 
             return response()->json([
                 'status' => 'success',
@@ -87,10 +87,10 @@ class RefJenisController extends Controller
 
     public function edit($id)
     {
-        $row = Ref_jenis::findOrFail($id);
+        $row = Ref_akar::findOrFail($id);
         if ($row) {
             $data['row'] = $row;
-            $html = view('admin.ref_jenis.formEdit', $data)->render();
+            $html = view('admin.akar.formEdit', $data)->render();
 
             return response()->json([
                 'status' => 'success',
@@ -117,7 +117,7 @@ class RefJenisController extends Controller
                     'msg' => $validator->getMessageBag()->all(),
                 ], 400);
             } else {
-                $data = Ref_jenis::findOrFail($id);
+                $data = Ref_akar::findOrFail($id);
                 $data->nama = $request->nama;
                 $data->save();
                 DB::commit();
@@ -139,7 +139,7 @@ class RefJenisController extends Controller
 
     public function destroy($id)
     {
-        $data = Ref_jenis::findOrFail($id);
+        $data = Ref_akar::findOrFail($id);
         if ($data) {
             $data->delete();
             return response()->json([
@@ -155,7 +155,7 @@ class RefJenisController extends Controller
 
     public function getDataTable(Request $request)
     {
-        $data = Ref_jenis::all();
+        $data = Ref_akar::all();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($dt) {

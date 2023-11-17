@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\Ref_akar;
+use App\Models\Ref_kondisi;
+use App\Models\Ref_tajuk;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 
@@ -40,6 +43,9 @@ class PohonController extends Controller
 
         $data['kecamatan'] = Kecamatan::where('kode_kab', 3309)->get();
         $data['jenis'] = Ref_jenis::all();
+        $data['akar'] = Ref_akar::all();
+        $data['kondisi'] = Ref_kondisi::all();
+        $data['tajuk'] = Ref_tajuk::all();
 
         return view('admin.pohon.form', $data);
     }
@@ -57,11 +63,16 @@ class PohonController extends Controller
                 'longitude' => 'required',
                 'kode' => 'required',
                 'jenis_id' => 'required|exists:ref_jenis,id',
+                'akar_id' => 'required|exists:ref_akar,id',
+                'kondisi_id' => 'required|exists:ref_kondisi,id',
+                'tajuk_id' => 'required|exists:ref_tajuk,id',
                 'lokasi' => 'required',
                 'tinggi' => 'required',
+                'utara' => 'required',
+                'selatan' => 'required',
+                'timur' => 'required',
+                'barat' => 'required',
                 'diameter' => 'required',
-                'akar' => 'required',
-                'kondisi' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -82,8 +93,13 @@ class PohonController extends Controller
                 $data->lokasi = $request->lokasi;
                 $data->tinggi = clear_koma($request->tinggi);
                 $data->diameter = clear_koma($request->diameter);
-                $data->akar = $request->akar;
-                $data->kondisi = $request->kondisi;
+                $data->utara = clear_koma($request->utara);
+                $data->selatan = clear_koma($request->selatan);
+                $data->timur = clear_koma($request->timur);
+                $data->barat = clear_koma($request->barat);
+                $data->akar_id = $request->akar_id;
+                $data->kondisi_id = $request->kondisi_id;
+                $data->tajuk_id = $request->tajuk_id;
                 $data->detail = $request->detail;
                 $data->koordinat = DB::raw("(ST_GeomFromText('POINT($request->longitude $request->latitude)'))");
                 $data->save();
@@ -106,7 +122,7 @@ class PohonController extends Controller
 
     public function show($id)
     {
-        $row = Pohon::with(['jenis', 'kecamatan', 'kelurahan'])->findOrFail($id);
+        $row = Pohon::with(['jenis', 'kecamatan', 'kelurahan', 'akar', 'kondisi', 'tajuk', 'foto'])->findOrFail($id);
         if ($row) {
             $data['row'] = $row;
             $html = view('admin.pohon.detail', $data)->render();
@@ -136,6 +152,8 @@ class PohonController extends Controller
             $data['kecamatan'] = Kecamatan::where('kode_kab', 3309)->get();
             $data['kelurahan'] = Kelurahan::where('kode_kec', $row->kode_kec)->get();
             $data['jenis'] = Ref_jenis::all();
+            $data['akar'] = Ref_akar::all();
+            $data['kondisi'] = Ref_kondisi::all();
 
             return view('admin.pohon.formEdit', $data);
         } else {
@@ -158,11 +176,16 @@ class PohonController extends Controller
                 'longitude' => 'required',
                 'kode' => 'required',
                 'jenis_id' => 'required|exists:ref_jenis,id',
+                'akar_id' => 'required|exists:ref_akar,id',
+                'kondisi_id' => 'required|exists:ref_kondisi,id',
+                'tajuk_id' => 'required|exists:ref_tajuk,id',
                 'lokasi' => 'required',
                 'tinggi' => 'required',
+                'utara' => 'required',
+                'selatan' => 'required',
+                'timur' => 'required',
+                'barat' => 'required',
                 'diameter' => 'required',
-                'akar' => 'required',
-                'kondisi' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -183,8 +206,13 @@ class PohonController extends Controller
                 $data->lokasi = $request->lokasi;
                 $data->tinggi = clear_koma($request->tinggi);
                 $data->diameter = clear_koma($request->diameter);
-                $data->akar = $request->akar;
-                $data->kondisi = $request->kondisi;
+                $data->utara = clear_koma($request->utara);
+                $data->selatan = clear_koma($request->selatan);
+                $data->timur = clear_koma($request->timur);
+                $data->barat = clear_koma($request->barat);
+                $data->akar_id = $request->akar_id;
+                $data->kondisi_id = $request->kondisi_id;
+                $data->tajuk_id = $request->tajuk_id;
                 $data->detail = $request->detail;
                 $data->koordinat = DB::raw("(ST_GeomFromText('POINT($request->longitude $request->latitude)'))");
                 $data->save();
@@ -294,10 +322,15 @@ class PohonController extends Controller
         $sheet->setCellValue('K3', 'AKAR');
         $sheet->setCellValue('L3', 'KONDISI');
         $sheet->setCellValue('M3', 'DETAIL POHON');
+        $sheet->setCellValue('N3', 'TAJUK');
+        $sheet->setCellValue('O3', 'UTARA (m)');
+        $sheet->setCellValue('P3', 'TIMUR (m)');
+        $sheet->setCellValue('Q3', 'SELATAN (m)');
+        $sheet->setCellValue('R3', 'BARAT (m)');
         // end judul
-        $sheet->getStyle('A3:M3')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+        $sheet->getStyle('A3:R3')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
-        $sheet->getStyle('A3:M3')->applyFromArray([
+        $sheet->getStyle('A3:R3')->applyFromArray([
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
                 'startColor' => [
@@ -308,12 +341,12 @@ class PohonController extends Controller
 
         $sheet->getStyle('A3:M3')->getAlignment()->setHorizontal('center');
 
-        foreach (['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'] as $column) $sheet->getColumnDimension($column)->setAutoSize(true);
+        foreach (['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R'] as $column) $sheet->getColumnDimension($column)->setAutoSize(true);
 
         $awal = 4;
         $no = 1;
 
-        $data = Pohon::with(['jenis', 'kecamatan', 'kelurahan'])->get();
+        $data = Pohon::with(['jenis', 'kecamatan', 'kelurahan', 'tajuk'])->get();
 
         foreach ($data as $row) {
             $sheet
@@ -327,10 +360,15 @@ class PohonController extends Controller
                 ->setCellValue('H' . $awal, $row->jenis->nama)
                 ->setCellValue('I' . $awal, $row->tinggi)
                 ->setCellValue('J' . $awal, $row->diameter)
-                ->setCellValue('K' . $awal, $row->akar)
-                ->setCellValue('L' . $awal, $row->kondisi)
-                ->setCellValue('M' . $awal, $row->detail);
-            $sheet->getStyle('A' . $awal . ':M' . $awal)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+                ->setCellValue('K' . $awal, $row->akar->nama)
+                ->setCellValue('L' . $awal, $row->kondisi->nama)
+                ->setCellValue('M' . $awal, $row->detail)
+                ->setCellValue('N' . $awal, $row->tajuk->nama)
+                ->setCellValue('O' . $awal, $row->utara)
+                ->setCellValue('P' . $awal, $row->timur)
+                ->setCellValue('Q' . $awal, $row->selatan)
+                ->setCellValue('R' . $awal, $row->barat);
+            $sheet->getStyle('A' . $awal . ':R' . $awal)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
             $awal++;
         }
 
@@ -351,7 +389,7 @@ class PohonController extends Controller
 
     public function getDataTable(Request $request)
     {
-        $data = Pohon::with(['jenis', 'kecamatan', 'kelurahan'])->get();
+        $data = Pohon::with(['jenis', 'kecamatan', 'kelurahan', 'akar', 'kondisi'])->get();
 
         return DataTables::of($data)
             ->addIndexColumn()

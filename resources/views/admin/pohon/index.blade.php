@@ -4,8 +4,8 @@
 
 @section('header', $header)
 @section('tombol')
-    <a class="btn btn-success mr-2" target="_blank" href="{{ route('admin.pohon.excel') }}"><i class="fa fa-print"></i> Cetak Excel</a>
-    <a class="btn btn-primary" href="{{ route('admin.pohon.create') }}"><i class="fa fa-plus"></i> Tambah Data</a>
+    <a class="btn btn-success mr-2" target="_blank" href="{{ route(session('type_role') . '.pohon.excel') }}"><i class="fa fa-print"></i> Cetak Excel</a>
+    <a class="btn btn-primary" href="{{ route(session('type_role') . '.pohon.create') }}"><i class="fa fa-plus"></i> Tambah Data</a>
 @endsection
 @section('konten')
     <div class="br-pagebody">
@@ -66,7 +66,7 @@
                     [10, 25, 50, 100, "All"]
                 ],
                 ajax: {
-                    url: '{{ route('admin.pohon.getTable') }}',
+                    url: '{{ route(session('type_role') . '.pohon.getTable') }}',
                     type: 'GET',
                     dataType: 'JSON',
                 },
@@ -117,14 +117,14 @@
         }
 
         function editData(id) {
-            var link = "{{ route('admin.pohon.edit', '') }}/" + id;
+            var link = "{{ route(session('type_role') . '.pohon.edit', '') }}/" + id;
             location.href = link;
         }
 
         function detailData(id) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('admin.pohon.detail', '') }}/" + id,
+                url: "{{ route(session('type_role') . '.pohon.detail', '') }}/" + id,
                 dataType: "JSON",
                 data: {},
                 beforeSend: function(res) {
@@ -147,7 +147,7 @@
         function lihat_map(id) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('admin.pohon.peta', '') }}/" + id,
+                url: "{{ route(session('type_role') . '.pohon.peta', '') }}/" + id,
                 dataType: "JSON",
                 data: {},
                 beforeSend: function(res) {
@@ -170,7 +170,7 @@
         function lihat_foto(id) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('admin.pohon.foto', '') }}/" + id,
+                url: "{{ route(session('type_role') . '.pohon.foto', '') }}/" + id,
                 dataType: "JSON",
                 data: {},
                 beforeSend: function(res) {
@@ -202,7 +202,7 @@
                 if (result.value) {
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ route('admin.pohon.delete', '') }}/" + id,
+                        url: "{{ route(session('type_role') . '.pohon.delete', '') }}/" + id,
                         dataType: "JSON",
                         beforeSend: function(res) {
                             beforeLoading(res);
@@ -243,7 +243,7 @@
                 if (result.value) {
                     $.ajax({
                         type: "PUT",
-                        url: "{{ route('admin.pohon.verif', '') }}/" + id,
+                        url: "{{ route(session('type_role') . '.pohon.verif', '') }}/" + id,
                         dataType: "JSON",
                         data: {
                             jenis: jenis,

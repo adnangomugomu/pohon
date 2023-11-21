@@ -47,7 +47,7 @@
                 [10, 25, 50, 100, "All"]
             ],
             ajax: {
-                url: '{{ route('admin.pohon.foto.getTable', $row->id) }}',
+                url: '{{ route(session('type_role') . '.pohon.foto.getTable', $row->id) }}',
                 type: 'GET',
                 dataType: 'JSON',
             },
@@ -95,7 +95,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('admin.pohon.foto.store', $row->id) }}",
+                    url: "{{ route(session('type_role') . '.pohon.foto.store', $row->id) }}",
                     data: new FormData(dt),
                     dataType: "JSON",
                     contentType: false,
@@ -128,7 +128,7 @@
             headers: {
                 'X-HTTP-Method-Override': 'PUT'
             },
-            url: "{{ route('admin.pohon.foto.update', '') }}/" + id,
+            url: "{{ route(session('type_role') . '.pohon.foto.update', '') }}/" + id,
             data: {
                 caption: $(dt).val(),
             },
@@ -158,7 +158,7 @@
             if (result.value) {
                 $.ajax({
                     type: "DELETE",
-                    url: "{{ route('admin.pohon.foto.delete', '') }}/" + id,
+                    url: "{{ route(session('type_role') . '.pohon.foto.delete', '') }}/" + id,
                     dataType: "JSON",
                     beforeSend: function(res) {
                         beforeLoading(res);

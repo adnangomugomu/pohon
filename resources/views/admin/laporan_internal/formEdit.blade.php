@@ -103,7 +103,7 @@
                     headers: {
                         'X-HTTP-Method-Override': 'PUT'
                     },
-                    url: "{{ route('admin.laporan_internal.update', $row->id) }}",
+                    url: "{{ route(session('type_role') . '.laporan_internal.update', $row->id) }}",
                     data: new FormData(dt),
                     dataType: "JSON",
                     contentType: false,

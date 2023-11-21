@@ -97,7 +97,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('admin.laporan_internal.store') }}",
+                    url: "{{ route(session('type_role') . '.laporan_internal.store') }}",
                     data: new FormData(dt),
                     dataType: "JSON",
                     contentType: false,

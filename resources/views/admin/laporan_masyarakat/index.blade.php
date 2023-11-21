@@ -4,7 +4,7 @@
 
 @section('header', $header)
 @section('tombol')
-    <a class="btn btn-success mr-2" target="_blank" href="{{ route('admin.laporan_masyarakat.excel') }}"><i class="fa fa-print"></i> Cetak Excel</a>
+    <a class="btn btn-success mr-2" target="_blank" href="{{ route(session('type_role') . '.laporan_masyarakat.excel') }}"><i class="fa fa-print"></i> Cetak Excel</a>
 @endsection
 @section('konten')
     <div class="br-pagebody">
@@ -65,7 +65,7 @@
                     [10, 25, 50, 100, "All"]
                 ],
                 ajax: {
-                    url: '{{ route('admin.laporan_masyarakat.getTable') }}',
+                    url: '{{ route(session('type_role') . '.laporan_masyarakat.getTable') }}',
                     type: 'GET',
                     dataType: 'JSON',
                 },
@@ -118,7 +118,7 @@
         function detailData(id) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('admin.laporan_masyarakat.detail', '') }}/" + id,
+                url: "{{ route(session('type_role') . '.laporan_masyarakat.detail', '') }}/" + id,
                 dataType: "JSON",
                 data: {},
                 beforeSend: function(res) {
@@ -150,7 +150,7 @@
                 if (result.value) {
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ route('admin.laporan_masyarakat.delete', '') }}/" + id,
+                        url: "{{ route(session('type_role') . '.laporan_masyarakat.delete', '') }}/" + id,
                         dataType: "JSON",
                         beforeSend: function(res) {
                             beforeLoading(res);
@@ -195,7 +195,7 @@
                         headers: {
                             'X-HTTP-Method-Override': 'PUT'
                         },
-                        url: "{{ route('admin.laporan_masyarakat.verif', '') }}/" + id,
+                        url: "{{ route(session('type_role') . '.laporan_masyarakat.verif', '') }}/" + id,
                         dataType: "JSON",
                         data: {
                             jenis: jenis,

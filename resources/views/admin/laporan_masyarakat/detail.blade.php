@@ -82,9 +82,11 @@
             <button type="button" class="btn btn-success"><i class="fa fa-check"></i> Selesai</button>
         @endif
     </div>
-    <div class="col-md-6 text-right">
-        <button type="button" onclick="hapusData('{{ $row->id }}');" class="btn btn-danger">Hapus Data</button>
-    </div>
+    @if (session('type_role') == 'admin')
+        <div class="col-md-6 text-right">
+            <button type="button" onclick="hapusData('{{ $row->id }}');" class="btn btn-danger">Hapus Data</button>
+        </div>
+    @endif
 </div>
 
 <script>

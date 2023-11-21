@@ -82,7 +82,9 @@
         @endif
     </div>
     <div class="col-md-6 text-right">
-        <button type="button" onclick="hapusData('{{ $row->id }}');" class="btn btn-danger">Hapus Data</button>
+        @if (session('type_role') == 'admin')
+            <button type="button" onclick="hapusData('{{ $row->id }}');" class="btn btn-danger">Hapus Data</button>
+        @endif
     </div>
 </div>
 

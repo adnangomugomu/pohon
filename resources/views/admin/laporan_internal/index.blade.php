@@ -4,7 +4,7 @@
 
 @section('header', $header)
 @section('tombol')
-    <a class="btn btn-success mr-2" target="_blank" href="{{ route('admin.laporan_internal.excel') }}"><i class="fa fa-print"></i> Cetak Excel</a>
+    <a class="btn btn-success mr-2" target="_blank" href="{{ route(session('type_role') . '.laporan_internal.excel') }}"><i class="fa fa-print"></i> Cetak Excel</a>
     <button class="btn btn-primary" onclick="tambahData();"><i class="fa fa-plus"></i> Tambah Data</button>
 @endsection
 @section('konten')
@@ -66,7 +66,7 @@
                     [10, 25, 50, 100, "All"]
                 ],
                 ajax: {
-                    url: '{{ route('admin.laporan_internal.getTable') }}',
+                    url: '{{ route(session('type_role') . '.laporan_internal.getTable') }}',
                     type: 'GET',
                     dataType: 'JSON',
                 },
@@ -85,7 +85,7 @@
                     {
                         data: 'no_hp',
                         name: 'no_hp'
-                    },                
+                    },
                     {
                         data: 'deskripsi',
                         name: 'deskripsi'
@@ -119,7 +119,7 @@
         function tambahData() {
             $.ajax({
                 type: "GET",
-                url: "{{ route('admin.laporan_internal.create') }}",
+                url: "{{ route(session('type_role') . '.laporan_internal.create') }}",
                 dataType: "JSON",
                 data: {},
                 beforeSend: function(res) {
@@ -142,7 +142,7 @@
         function editData(id) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('admin.laporan_internal.edit', '') }}/" + id,
+                url: "{{ route(session('type_role') . '.laporan_internal.edit', '') }}/" + id,
                 dataType: "JSON",
                 data: {},
                 beforeSend: function(res) {
@@ -165,7 +165,7 @@
         function detailData(id) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('admin.laporan_internal.detail', '') }}/" + id,
+                url: "{{ route(session('type_role') . '.laporan_internal.detail', '') }}/" + id,
                 dataType: "JSON",
                 data: {},
                 beforeSend: function(res) {
@@ -197,7 +197,7 @@
                 if (result.value) {
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ route('admin.laporan_internal.delete', '') }}/" + id,
+                        url: "{{ route(session('type_role') . '.laporan_internal.delete', '') }}/" + id,
                         dataType: "JSON",
                         beforeSend: function(res) {
                             beforeLoading(res);
@@ -242,7 +242,7 @@
                         headers: {
                             'X-HTTP-Method-Override': 'PUT'
                         },
-                        url: "{{ route('admin.laporan_internal.verif', '') }}/" + id,
+                        url: "{{ route(session('type_role') . '.laporan_internal.verif', '') }}/" + id,
                         dataType: "JSON",
                         data: {
                             jenis: jenis,

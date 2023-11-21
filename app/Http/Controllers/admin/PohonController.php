@@ -154,6 +154,7 @@ class PohonController extends Controller
             $data['jenis'] = Ref_jenis::all();
             $data['akar'] = Ref_akar::all();
             $data['kondisi'] = Ref_kondisi::all();
+            $data['tajuk'] = Ref_tajuk::all();
 
             return view('admin.pohon.formEdit', $data);
         } else {

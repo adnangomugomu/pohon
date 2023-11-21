@@ -105,7 +105,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "{{ route('admin.grafik_laporan') }}",
+                url: "{{ route(session('type_role').'.grafik_laporan') }}",
                 data: {
                     bulan: bulan,
                     tahun: tahun,

@@ -111,11 +111,13 @@
 </div>
 
 @if ($row->is_verif == 0)
-    <div class="row">
-        <div class="col-md-12 text-right">
-            <button type="button" onclick="hapusData('{{ $row->id }}');" class="btn btn-danger">Hapus Data</button>
+    @if (session('type_role') == 'admin')
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <button type="button" onclick="hapusData('{{ $row->id }}');" class="btn btn-danger">Hapus Data</button>
+            </div>
         </div>
-    </div>
+    @endif
 @else
     <div class="row">
         <div class="col-md-12 text-right">

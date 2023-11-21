@@ -95,13 +95,13 @@
     <header id="topnav" class="defaultscroll sticky map-header">
         <div class="container-fluid">
             <!-- Logo container-->
-            <a style="position: absolute;" class="logo logo-wrap" href="{{ route('admin.dashboard') }}">
+            <a style="position: absolute;" class="logo logo-wrap" href="{{ route(session('type_role') . '.dashboard') }}">
                 <img src="{{ asset('img/bg-2.png') }}" height="120" class="logo-light-mode" alt="">
             </a>
 
             <div class="buy-button">
                 <div class="list-navigation">
-                    <a class="nav-btn" href="{{ route('admin.dashboard') }}" title="Menuju ke Beranda"><i data-feather="home" class="fea-lg"></i></a>
+                    <a class="nav-btn" href="{{ route(session('type_role') . '.dashboard') }}" title="Menuju ke Beranda"><i data-feather="home" class="fea-lg"></i></a>
                     <a class="nav-btn" id="layer" href="javascript:void(0);"><i data-feather="layers" class="fea-lg"></i></a>
                     <a class="nav-btn" id="center" href="javascript:void(0);"><i data-feather="map-pin" class="fea-lg"></i></a>
                     <a class="nav-btn" id="zoom-out" href="javascript:void(0);"><i data-feather="zoom-out" class="fea-lg"></i></a>
@@ -176,7 +176,7 @@
 
             <div class="mobile-nav-wrap">
                 <div class="mobile-nav">
-                    <a class="nav-btn" href="{{ route('admin.dashboard') }}" title="Menuju ke Beranda"><i data-feather="home" class="fea-lg"></i></a>
+                    <a class="nav-btn" href="{{ route(session('type_role') . '.dashboard') }}" title="Menuju ke Beranda"><i data-feather="home" class="fea-lg"></i></a>
                     <a class="nav-btn" id="layer" href="javascript:void(0);"><i data-feather="layers" class="fea-lg"></i></a>
                     <a class="nav-btn" id="center" href="javascript:void(0);"><i data-feather="map-pin" class="fea-lg"></i></a>
                     <a class="nav-btn" id="zoom-out" href="javascript:void(0);"><i data-feather="zoom-out" class="fea-lg"></i></a>
@@ -327,7 +327,7 @@
         function load_peta() {
             if (geoJson) map.removeLayer(geoJson);
 
-            geoJson = new L.GeoJSON.AJAX("{{ route('admin.peta.geojson') }}", {
+            geoJson = new L.GeoJSON.AJAX("{{ route(session('type_role') . '.peta.geojson') }}", {
                 onEachFeature: function(feature, layer) {
                     layer.on({
                         'click': function(e) {
@@ -470,7 +470,7 @@
 
                             $.ajax({
                                 type: "POST",
-                                url: "{{ route('admin.peta.jarak') }}",
+                                url: "{{ route(session('type_role') . '.peta.jarak') }}",
                                 data: {
                                     lat: lat,
                                     long: long,

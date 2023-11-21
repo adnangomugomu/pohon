@@ -165,7 +165,7 @@
                                     Tajuk Selatan (m)
                                 </div>
                                 <div class="col-7 col-sm-8">
-                                    <input class="form-control rupiah" type="text" name="selatan" placeholder="Tajuk selatan">
+                                    <input class="form-control rupiah" type="text" name="selatan" placeholder="Tajuk selatan" required>
                                 </div>
                             </div>
                         </div>
@@ -234,7 +234,7 @@
 
                     $.ajax({
                         type: "POST",
-                        url: "{{ route('admin.pohon.store') }}",
+                        url: "{{ route(session('type_role') . '.pohon.store') }}",
                         data: new FormData(dt),
                         dataType: "JSON",
                         contentType: false,
@@ -252,7 +252,7 @@
                                     showConfirmButton: true,
                                 })
                                 .then(() => {
-                                    location.href = "{{ route('admin.pohon') }}"
+                                    location.href = "{{ route(session('type_role') . '.pohon') }}"
                                 })
                         }
                     });

@@ -117,7 +117,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Akar Pohon <small class="text-danger">*</small></label>
                             <select name="akar_id" class="form-control form_select" data-placeholder="pilih akar" required>
@@ -128,7 +128,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Kondisi Pohon <small class="text-danger">*</small></label>
                             <select name="kondisi_id" class="form-control form_select" data-placeholder="pilih kondisi" required>
@@ -137,6 +137,60 @@
                                     <option {{ $item->id == $row->kondisi_id ? 'selected' : '' }} value="{{ $item->id }}">{{ $item->nama }}</option>
                                 @endforeach
                             </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Tajuk <small class="text-danger">*</small></label>
+                            <select name="tajuk_id" class="form-control form_select" data-placeholder="pilih tajuk" required>
+                                <option value=""></option>
+                                @foreach ($tajuk as $item)
+                                    <option {{ $item->id == $row->tajuk_id ? 'selected' : '' }} value="{{ $item->id }}">{{ $item->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-layout form-layout-7">
+                            <div class="row no-gutters">
+                                <div class="col-5 col-sm-4">
+                                    Tajuk Utara (m)
+                                </div>
+                                <div class="col-7 col-sm-8">
+                                    <input class="form-control rupiah" type="text" name="utara" value="{{ rupiah($row->utara, true) }}" placeholder="Tajuk utara" required>
+                                </div>
+                            </div>
+                            <div class="row no-gutters">
+                                <div class="col-5 col-sm-4">
+                                    Tajuk Selatan (m)
+                                </div>
+                                <div class="col-7 col-sm-8">
+                                    <input class="form-control rupiah" type="text" name="selatan" value="{{ rupiah($row->selatan, true) }}" placeholder="Tajuk selatan" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-layout form-layout-7">
+                            <div class="row no-gutters">
+                                <div class="col-5 col-sm-4">
+                                    Tajuk Timur (m)
+                                </div>
+                                <div class="col-7 col-sm-8">
+                                    <input class="form-control rupiah" type="text" name="timur" value="{{ rupiah($row->timur, true) }}" placeholder="Tajuk timur" required>
+                                </div>
+                            </div>
+                            <div class="row no-gutters">
+                                <div class="col-5 col-sm-4">
+                                    Tajuk Barat (m)
+                                </div>
+                                <div class="col-7 col-sm-8">
+                                    <input class="form-control rupiah" type="text" name="barat" value="{{ rupiah($row->barat, true) }}" placeholder="Tajuk barat" required>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -186,7 +240,7 @@
                         headers: {
                             'X-HTTP-Method-Override': 'PUT'
                         },
-                        url: "{{ route('admin.pohon.update', $row->id) }}",
+                        url: "{{ route(session('type_role') . '.pohon.update', $row->id) }}",
                         data: new FormData(dt),
                         dataType: "JSON",
                         contentType: false,
@@ -204,7 +258,7 @@
                                     showConfirmButton: true,
                                 })
                                 .then(() => {
-                                    location.href = "{{ route('admin.pohon') }}"
+                                    location.href = "{{ route(session('type_role') . '.pohon') }}"
                                 })
                         }
                     });

@@ -81,8 +81,8 @@
                                         <li class="mt-0">Kode Pohon : {{ $row->kode }}</li>
                                         <li class="mt-0">Tinggi (cm) : {{ $row->tinggi }}</li>
                                         <li class="mt-0">Diameter (cm) : {{ $row->diameter }}</li>
-                                        <li class="mt-0">Akar : {{ $row->akar }}</li>
-                                        <li class="mt-0">Kondisi : {{ $row->kondisi }}</li>
+                                        <li class="mt-0">Akar : {{ $row->akar->nama }}</li>
+                                        <li class="mt-0">Kondisi : {{ $row->kondisi->nama }}</li>
                                     </ul>
                                 </div>
                                 <div class="col-md-6">

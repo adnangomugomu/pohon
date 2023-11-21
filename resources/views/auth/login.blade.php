@@ -71,7 +71,8 @@
                                                 <div class="text-center d-block d-md-none">
                                                     <img src="{{ asset('img/save-pohon.jpg') }}" style="width: 100px;" alt="foto header" class="rounded-circle mb-1">
                                                 </div>
-                                                <h4 class="text-center mb-0">LOGIN - {{ env('WEB_NAMA') }}</h4>
+                                                <h4 class="text-center mb-0">LOGIN - SIIP</h4>
+                                                <h5 class="text-center">(Sistem Informasi Inventaris Pohon)</h5>
                                             </div>
                                         </div>
                                         <div class="text-center">

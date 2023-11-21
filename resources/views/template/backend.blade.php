@@ -56,7 +56,7 @@
 
     <div class="br-logo">
         <a href="{{ url('/') }}">
-            {{ env('WEB_NICKNAME') }}
+            <img src="{{ asset('img/siip.png') }}" alt="logo" style="width: 200px;">
         </a>
     </div>
     @if (Auth::user()->role_id == 1)

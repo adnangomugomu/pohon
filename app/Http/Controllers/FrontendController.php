@@ -65,17 +65,19 @@ class FrontendController extends Controller
                 ], 400);
             } else {
                 $data = new Laporan();
-                $data->nama = $request->nama;
-                $data->email = $request->email;
-                $data->no_hp = $request->no_hp;
-                $data->deskripsi = $request->deskripsi;
+                $data->nama = htmlspecialchars($request->nama);
+                $data->email = htmlspecialchars($request->email);
+                $data->no_hp = htmlspecialchars($request->no_hp);
+                $data->deskripsi = htmlspecialchars($request->deskripsi);
                 $data->jenis = 'masyarakat';
                 $data->status_id = 1;
 
-                $data->aduan_id = $request->aduan_id;
-                $data->latitude = $request->latitude;
-                $data->longitude = $request->longitude;
-                $data->koordinat = DB::raw("(ST_GeomFromText('POINT($request->longitude $request->latitude)'))");
+                $data->aduan_id = htmlspecialchars($request->aduan_id);
+                $data->latitude = htmlspecialchars($request->latitude);
+                $data->longitude = htmlspecialchars($request->longitude);
+                $long = $request->longitude;
+                $lat = $request->latitude;
+                $data->koordinat = DB::raw("(ST_GeomFromText('POINT($long $lat)'))");
 
                 if ($request->hasFile('foto')) {
                     $photo = $request->file('foto');
@@ -99,7 +101,7 @@ class FrontendController extends Controller
             return response()->json([
                 'status' => 'failed',
                 'msg' => 'Terjadi kesalahan',
-                'e'=>$e,
+                'e' => $e,
             ], 500);
         }
     }

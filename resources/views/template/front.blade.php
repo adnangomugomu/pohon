@@ -55,8 +55,12 @@
             <nav class="navbar navbar-expand-lg transparent-bg darkcolor static-nav">
                 <div class="container bgdefault nav-cont">
                     <a class="navbar-brand" href="{{ route('home') }}">
-                        <h3 class="mb-0 logo-default">Pendataan Pohon</h3>
-                        <h3 class="mb-0 logo-scrolled">DLH BOYOLALI</h3>
+                        <h3 class="mb-0 logo-default">
+                            <img src="{{ asset('img/siip-new.png') }}" alt="logo" style="width: 155px;max-width: none;">
+                        </h3>
+                        <h3 class="mb-0 logo-scrolled">
+                            <img src="{{ asset('img/icon.png') }}" alt="logo" style="width: 30px;max-width: none;">
+                        </h3>
                     </a>
                     <div class="collapse navbar-collapse">
                         <ul class="navbar-nav ml-auto">
